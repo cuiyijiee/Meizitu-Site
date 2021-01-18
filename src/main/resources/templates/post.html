@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="base :: htmlHead">
+</head>
+<body class="post-template-default single single-post postid-53242 single-format-standard custom-background">
+<div id="page" class="hfeed site full">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+    <header th:include="base :: htmlTitle" id="masthead" class="site-header">
+    </header>
+    <div id="content" class="site-content container">
+        <div class="row">
+            <div id="primary" class="content-area col-lg-8">
+                <main id="main" class="site-main single1">
+                    <article id="post-53242"
+                             class="post type-post status-publish format-standard has-post-thumbnail hentry category-everia category-magazine tag-miku-itou- tag-young-gangan- odd">
+                        <header class="entry-header">
+                            <div class="title-meta-wrapper"><h1 class="entry-title" th:text="${album.getTitle()}"></h1>
+                                <ul class="entry-meta">
+                                    <li class="byline"> By <span class="author vcard">
+                                        <a class="url fn n"
+                                           href="#">NongMo</a></span>
+                                    </li>
+                                    <li class="cat-links">In <a href="https://everia.club/category/everia/"
+                                                                rel="category tag">NongMo</a>, <a
+                                            href="https://everia.club/category/magazine/"
+                                            rel="category tag" th:text="${album.getCategory().getName()}"></a></li>
+                                    <li class="posted-on"><span class="screen-reader-text">Posted on</span> <a
+                                            href="#"
+                                            rel="bookmark">
+                                        <time class="entry-date published" th:datetime="${album.getCreatedAt()}"
+                                              th:text="${album.getCreatedAt().toLocalDate()}">
+                                        </time>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </header>
+                        <div class="entry-content">
+                            <p th:text="${album.getTitle()}"><span id="more-53242"></span></p>
+                            <div th:each="picture : ${pictures}" class="separator" style="clear: both;">
+                                <a th:href="${picture.getUrl()}"
+                                   style="display: block; padding: 1em 0; text-align: center; ">
+                                    <img class="lazyload" alt=""
+                                         data-original-height="1600"
+                                         data-original-width="1134"
+                                         th:src="${picture.getUrl()}">
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+            <div class="col-lg-4">
+                <aside id="right-sidebar" class="widget-area" style="position: sticky;">
+                    <!-- 广告位
+                    <div id="custom_html-2" class="widget_text widget widget_custom_html">
+                        <div class="textwidget custom-html-widget">
+                            <script type="115443c76542cd13c371f769-text/javascript">var ad_idzone = "3251876",
+                                    ad_width = "300",
+                                    ad_height = "250";
+                            </script>
+                            <script type="115443c76542cd13c371f769-text/javascript"
+                                    src="https://ads.exosrv.com/ads.js"></script>
+                            <noscript>
+                                <iframe src="https://syndication.exosrv.com/ads-iframe-display.php?idzone=3251876&output=noscript&type=300x250"
+                                        width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
+                                        frameborder="0"></iframe>
+                            </noscript>
+                        </div>
+                    </div>
+                    -->
+                    <div id="search-2" class="widget widget_search">
+                        <form role="search" method="get" class="search-form" action="/search/">
+                            <label>
+                                <span class="screen-reader-text">Search for:</span>
+                            </label>
+                            <input type="search" class="search-field" placeholder="Search &hellip;" value=""
+                                   name="key"/>
+                            <button type="submit" class="search-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                                <span class="screen-reader-text">Search</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div id="wli_popular_posts-5" class="widget wli_popular_posts-class">
+                        <h3 class="widget-title">Popular Posts</h3>
+                        <ul>
+                            <li th:each="album : ${latestAlbum}">
+                                <div class="post_thumb post_thumb_left">
+                                    <a href="#" th:title="${album.getTitle()}">
+                                        <noscript>
+                                            <img fifu-featured="1" width="320" height="480"
+                                                 th:src="${album.getCoverUrl()}"
+                                                 class="attachment-360x480 size-360x480 wp-post-image"
+                                                 th:alt="${album.getTitle()}"/>
+                                        </noscript>
+                                        <img width="320" height="480"
+                                             th:src="${album.getCoverUrl()}"
+                                             th:data-src="${album.getCoverUrl()}"
+                                             class="lazyload attachment-360x480 size-360x480 wp-post-image"
+                                             th:alt="${album.getTitle()}"/> </a></div>
+                                <h3>
+                                    <a href="#"
+                                       th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
+                                </h3>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <footer th:include="base :: htmlFoot" id="site-footer">
+    </footer>
+</div>
+</body>
+</html>

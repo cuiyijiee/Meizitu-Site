@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="base :: htmlHead">
+</head>
+<body class="home blog custom-background hfeed">
+<div id="page" class="hfeed site full">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+    <header th:include="base :: htmlTitle" id="masthead" class="site-header">
+    </header>
+    <div id="content" class="site-content container">
+        <div class="row">
+            <div id="primary" class="content-area col-lg-8">
+                <main id="main" class="site-main blog7">
+                    <header id="page-header" th:if="${category != null}">
+                        <h1 class="page-title">Category: <span
+                                th:text="${category.substring(0, 1).toUpperCase() + category.substring(1)}"></span></h1>
+                    </header>
+                    <div class="row row-eq-height">
+                        <div class="col-lg-6" th:each="album : ${albumPage.data}">
+                            <article th:id="${album.getId()}"
+                                     class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
+                                <div class="post-thumbnail">
+                                    <a th:href="|/post/${album.getUrlEncodedTitle()}/|">
+                                        <img width="400" height="600"
+                                             class="attachment-post-thumbnails size-post-thumbnails wp-post-image"
+                                             action th:src="${album.getCoverUrl()}"
+                                             th:title="${album.getTitle()}"/>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <header class="entry-header">
+                                        <div class="title-meta-wrapper"><h2 class="entry-title"><a
+                                                th:href="|/post/${album.getUrlEncodedTitle()}/|"
+                                                rel="bookmark" th:text="${album.getTitle()}">title</a>
+                                        </h2>
+                                            <ul class="entry-meta">
+                                                <li class="byline"> By <span class="author vcard">
+                                                    <a class="url fn n" href="#">NongMo.Zone</a></span>
+                                                </li>
+                                                <li class="posted-on"><span class="screen-reader-text">Posted on</span>
+                                                    <time class="entry-date published"
+                                                          th:datetime="${album.getCreatedAt()}"
+                                                          th:text="${album.getCreatedAt().toLocalDate()}"> published
+                                                    </time>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </header>
+                                    <div class="entry-content"></div>
+                                </div>
+                            </article>
+                        </div>
+                        <nav class="navigation posts-navigation" role="navigation" aria-label="Posts">
+                            <h2 class="screen-reader-text">Posts navigation</h2>
+                            <div class="nav-links">
+                                <div th:if="${category == null}">
+                                    <div class="nav-previous" th:if="${albumPage.hasNext()}"><a
+                                            th:href="|/page/${albumPage.getNext()}/|">Older posts</a>
+                                    </div>
+
+                                    <div class="nav-next" th:if="${albumPage.hasPre()}"><a
+                                            th:href="|/page/${albumPage.getPre()}/|">Newer posts</a>
+                                    </div>
+                                </div>
+                                <div th:if="${category != null}">
+                                    <div class="nav-previous" th:if="${albumPage.hasNext()}"><a
+                                            th:href="|/category/${category}/page/${albumPage.getNext()}/|">Older
+                                        posts</a>
+                                    </div>
+
+                                    <div class="nav-next" th:if="${albumPage.hasPre()}"><a
+                                            th:href="|/category/${category}/page/${albumPage.getPre()}/|">Newer
+                                        posts</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </main>
+            </div>
+            <div class="col-lg-4">
+                <aside id="right-sidebar" class="widget-area">
+                    <!-- 广告位
+                    <div id="custom_html-2" class="widget_text widget widget_custom_html">
+                        <div class="textwidget custom-html-widget">
+                            <script type="115443c76542cd13c371f769-text/javascript">var ad_idzone = "3251876",
+                                    ad_width = "300",
+                                    ad_height = "250";
+                            </script>
+                            <script type="115443c76542cd13c371f769-text/javascript"
+                                    src="https://ads.exosrv.com/ads.js"></script>
+                            <noscript>
+                                <iframe src="https://syndication.exosrv.com/ads-iframe-display.php?idzone=3251876&output=noscript&type=300x250"
+                                        width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
+                                        frameborder="0"></iframe>
+                            </noscript>
+                        </div>
+                    </div>
+                    -->
+                    <div id="search-2" class="widget widget_search">
+                        <form role="search" method="get" class="search-form" action="/search/">
+                            <label>
+                                <span class="screen-reader-text">Search for:</span>
+                            </label>
+                            <input type="search" class="search-field" placeholder="Search &hellip;" value=""
+                                   name="key"/>
+                            <button type="submit" class="search-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                                <span class="screen-reader-text">Search</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div id="wli_popular_posts-5" class="widget wli_popular_posts-class">
+                        <h3 class="widget-title">Popular Posts</h3>
+                        <ul>
+                            <li th:each="album : ${latestAlbum}">
+                                <div class="post_thumb post_thumb_left">
+                                    <a href="#" th:title="${album.getTitle()}">
+                                        <noscript>
+                                            <img fifu-featured="1" width="320" height="480"
+                                                 th:src="${album.getCoverUrl()}"
+                                                 class="attachment-360x480 size-360x480 wp-post-image"
+                                                 th:alt="${album.getTitle()}"/>
+                                        </noscript>
+                                        <img width="320" height="480"
+                                             th:src="${album.getCoverUrl()}"
+                                             th:data-src="${album.getCoverUrl()}"
+                                             class="lazyload attachment-360x480 size-360x480 wp-post-image"
+                                             th:alt="${album.getTitle()}"/> </a></div>
+                                <h3>
+                                    <a href="#"
+                                       th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
+                                </h3>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <footer th:include="base :: htmlFoot" id="site-footer">
+    </footer>
+</div>
+</body>
+</html>
