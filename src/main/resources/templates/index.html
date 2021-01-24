@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="base :: htmlHead">
+<head th:include="base :: htmlHead(pageTitle = ${category == null ? 'NongMo.Zone' :'Category: ' + category.substring(0, 1).toUpperCase() + category.substring(1)})">
 </head>
 <body class="home blog custom-background hfeed">
 <div id="page" class="hfeed site full">

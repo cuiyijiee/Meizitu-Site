@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="base :: htmlHead">
+<head th:include="base :: htmlHead(pageTitle = ${album.getTitle()})">
 </head>
 <body class="post-template-default single single-post postid-53242 single-format-standard custom-background">
 <div id="page" class="hfeed site full">
@@ -12,7 +12,7 @@
             <div id="primary" class="content-area col-lg-8">
                 <main id="main" class="site-main single1">
                     <article id="post-53242"
-                             class="post type-post status-publish format-standard has-post-thumbnail hentry category-everia category-magazine tag-miku-itou- tag-young-gangan- odd">
+                             class="post type-post status-publish format-standard has-post-thumbnail hentry category-magazine tag-miku-itou- tag-young-gangan- odd">
                         <header class="entry-header">
                             <div class="title-meta-wrapper"><h1 class="entry-title" th:text="${album.getTitle()}"></h1>
                                 <ul class="entry-meta">
@@ -20,9 +20,9 @@
                                         <a class="url fn n"
                                            href="#">NongMo</a></span>
                                     </li>
-                                    <li class="cat-links">In <a href="https://everia.club/category/everia/"
+                                    <li class="cat-links">In <a href="/"
                                                                 rel="category tag">NongMo</a>, <a
-                                            href="https://everia.club/category/magazine/"
+                                            th:href="|category/${album.getCategory().getName()}/|"
                                             rel="category tag" th:text="${album.getCategory().getName()}"></a></li>
                                     <li class="posted-on"><span class="screen-reader-text">Posted on</span> <a
                                             href="#"
