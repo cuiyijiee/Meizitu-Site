@@ -2008,7 +2008,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 .posts-navigation .nav-previous,
 .post-navigation .nav-previous {
     float: left;
-    width: 50%;
 }
 
 .comment-navigation .nav-next,
@@ -2016,7 +2015,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 .post-navigation .nav-next {
     float: right;
     text-align: right;
-    width: 50%;
 }
 
 .nav-previous {
