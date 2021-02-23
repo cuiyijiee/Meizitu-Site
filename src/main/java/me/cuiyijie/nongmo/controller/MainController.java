@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URLDecoder;
 import java.util.List;
@@ -72,6 +73,17 @@ public class MainController {
 
         }
         return "post";
+    }
+
+
+    @RequestMapping(value = {"search"})
+    public String search(Model model, @RequestParam String key) {
+
+        List<Album> resultAlbum = albumService.findAlbumByTitleBy(key);
+        model.addAttribute("key", key);
+        model.addAttribute("searchResult", resultAlbum);
+
+        return "search";
     }
 
 }

@@ -3,7 +3,11 @@ package me.cuiyijie.nongmo.dao;
 import me.cuiyijie.nongmo.entity.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author cyj976655@gmail.com
@@ -11,5 +15,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AlbumDao extends JpaRepository<Album, Long>, JpaSpecificationExecutor<Album> {
+
+
+    @Query(nativeQuery = true, value = "select * from album where title like %:title% order by id limit 100")
+    List<Album> findByTitleLike(@Param("title") String title);
 
 }

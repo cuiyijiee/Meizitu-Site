@@ -104,4 +104,8 @@ public class AlbumService {
         }
         return latestTenAlbum;
     }
+
+    public List<Album> findAlbumByTitleBy(String title){
+        return albumDao.findByTitleLike(title);
+    }
 }
