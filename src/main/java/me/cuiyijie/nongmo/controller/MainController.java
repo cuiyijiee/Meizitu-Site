@@ -11,11 +11,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,9 +63,14 @@ public class MainController {
         return "index";
     }
 
+    //    @RequestMapping(value = {"/post/{post}/**"})
+    //    public String post(Model model,
+    //                       @PathVariable(value = "post") String postName,
+    //                       HttpServletRequest request) throws UnsupportedEncodingException {
+    //        String realName = URLDecoder.decode(postName + "/" + extractPathFromPattern(request), "utf-8");
     @RequestMapping(value = {"/post/{post}/"})
-    public String post(Model model, @PathVariable(value = "post") String postName) {
-        String realName = URLDecoder.decode(postName);
+    public String post(Model model, @PathVariable(value = "post") String postName) throws UnsupportedEncodingException {
+        String realName = URLDecoder.decode(postName,"utf-8");
         Optional<Album> maybeAlbum = albumService.findByName(realName);
         if (maybeAlbum.isPresent()) {
             Album album = maybeAlbum.get();
@@ -73,6 +83,13 @@ public class MainController {
 
         }
         return "post";
+    }
+
+
+    private String extractPathFromPattern(final HttpServletRequest request) {
+        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
     }
 
 
