@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="base :: htmlHead(pageTitle = ${'Search Result for ' + key})">
+</head>
+<body class="home blog custom-background hfeed">
+<div id="page" class="hfeed site full">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+    <header th:include="base :: htmlTitle" id="masthead" class="site-header">
+    </header>
+    <div id="content" class="site-content container">
+        <div class="row">
+            <div id="primary" class="content-area col-lg-12">
+                <main id="main" class="site-main blog7">
+                    <header id="page-header">
+                        <h1 class="page-title">Search Results for <span th:text="${key} + ' (' + ${searchResult.size()} + ')'"></span></h1>
+                    </header>
+                    <div class="row row-eq-height">
+                        <div class="col-lg-6" th:each="album : ${searchResult}">
+                            <article th:id="${album.getId()}"
+                                     class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
+                                <div class="post-thumbnail">
+                                    <a th:href="|/post/${album.getUrlEncodedTitle()}/|">
+                                        <img width="400" height="600"
+                                             class="attachment-post-thumbnails size-post-thumbnails wp-post-image"
+                                             action th:src="${album.getCoverUrl()}"
+                                             th:title="${album.getTitle()}"/>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <header class="entry-header">
+                                        <div class="title-meta-wrapper"><h2 class="entry-title"><a
+                                                th:href="|/post/${album.getUrlEncodedTitle()}/|"
+                                                rel="bookmark" th:text="${album.getTitle()}">title</a>
+                                        </h2>
+                                            <ul class="entry-meta">
+                                                <li class="byline"> By <span class="author vcard">
+                                                    <a class="url fn n" href="#">NongMo.Zone</a></span>
+                                                </li>
+                                                <li class="posted-on"><span class="screen-reader-text">Posted on</span>
+                                                    <time class="entry-date published"
+                                                          th:datetime="${album.getCreatedAt()}"
+                                                          th:text="${album.getCreatedAt().toLocalDate()}"> published
+                                                    </time>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </header>
+                                    <div class="entry-content"></div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer th:include="base :: htmlFoot" id="site-footer">
+    </footer>
+</div>
+</body>
+</html>
