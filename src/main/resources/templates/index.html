@@ -20,7 +20,7 @@
                             <article th:id="${album.getId()}"
                                      class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
                                 <div class="post-thumbnail">
-                                    <a th:href="|/post/${album.getUrlEncodedTitle()}/|">
+                                    <a th:href="|/post_id/${album.getId()}/|">
                                         <img width="400" height="600"
                                              class="attachment-post-thumbnails size-post-thumbnails wp-post-image"
                                              action th:src="${album.getCoverUrl()}"
@@ -30,7 +30,7 @@
                                 <div class="card-body">
                                     <header class="entry-header">
                                         <div class="title-meta-wrapper"><h2 class="entry-title"><a
-                                                th:href="|/post/${album.getUrlEncodedTitle()}/|"
+                                                th:href="|/post_id/${album.getId()}/|"
                                                 rel="bookmark" th:text="${album.getTitle()}">title</a>
                                         </h2>
                                             <ul class="entry-meta">
@@ -114,7 +114,7 @@
                         <ul>
                             <li th:each="album : ${latestAlbum}">
                                 <div class="post_thumb post_thumb_left">
-                                    <a href="#" th:title="${album.getTitle()}">
+                                    <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
                                         <noscript>
                                             <img fifu-featured="1" width="320" height="480"
                                                  th:src="${album.getCoverUrl()}"
@@ -127,7 +127,7 @@
                                              class="lazyload attachment-360x480 size-360x480 wp-post-image"
                                              th:alt="${album.getTitle()}"/> </a></div>
                                 <h3>
-                                    <a href="#"
+                                    <a th:href="|/post_id/${album.getId()}/|"
                                        th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
                                 </h3>
                             </li>

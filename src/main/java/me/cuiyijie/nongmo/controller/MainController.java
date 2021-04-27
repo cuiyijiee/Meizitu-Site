@@ -20,7 +20,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +69,7 @@ public class MainController {
     //        String realName = URLDecoder.decode(postName + "/" + extractPathFromPattern(request), "utf-8");
     @RequestMapping(value = {"/post/{post}/"})
     public String post(Model model, @PathVariable(value = "post") String postName) throws UnsupportedEncodingException {
-        String realName = URLDecoder.decode(postName,"utf-8");
+        String realName = URLDecoder.decode(postName, "utf-8");
         Optional<Album> maybeAlbum = albumService.findByName(realName);
         if (maybeAlbum.isPresent()) {
             Album album = maybeAlbum.get();
@@ -85,6 +84,21 @@ public class MainController {
         return "post";
     }
 
+    @RequestMapping(value = {"/post_id/{albumId}"})
+    public String newPost(Model model, @PathVariable(value = "albumId") Long postId) throws UnsupportedEncodingException {
+        Optional<Album> maybeAlbum = albumService.findById(postId);
+        if (maybeAlbum.isPresent()) {
+            Album album = maybeAlbum.get();
+            List<Picture> pictures = albumService.findAllPicture(album.getId());
+            model.addAttribute("album", album);
+            model.addAttribute("pictures", pictures);
+            List<Album> latestAlbum = albumService.getLatestTenAlbum();
+            model.addAttribute("latestAlbum", latestAlbum);
+        } else {
+
+        }
+        return "post";
+    }
 
     private String extractPathFromPattern(final HttpServletRequest request) {
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
