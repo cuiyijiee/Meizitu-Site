@@ -20,7 +20,12 @@ public class SitemapController {
 
     @RequestMapping("sitemap{index}.xml")
     public String genSitemap(@PathVariable(required = false) Optional<Integer> index) {
-        return sitemapService.genSitemapWithIndex(index.orElse(0));
+        return sitemapService.genSitemapWithIndex(index.orElse(0), false);
+    }
+
+    @RequestMapping("new_sitemap{index}.xml")
+    public String genNewSitemap(@PathVariable(required = false) Optional<Integer> index) {
+        return sitemapService.genSitemapWithIndex(index.orElse(0), true);
     }
 
 }

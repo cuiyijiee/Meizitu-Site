@@ -18,7 +18,7 @@
                                 <ul class="entry-meta">
                                     <li class="byline"> By <span class="author vcard">
                                         <a class="url fn n"
-                                           href="#">NongMo</a></span>
+                                           href="/">NongMo</a></span>
                                     </li>
                                     <li class="cat-links">In <a href="/"
                                                                 rel="category tag">NongMo</a>, <a
@@ -89,7 +89,7 @@
                         <ul>
                             <li th:each="album : ${latestAlbum}">
                                 <div class="post_thumb post_thumb_left">
-                                    <a href="#" th:title="${album.getTitle()}">
+                                    <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
                                         <noscript>
                                             <img fifu-featured="1" width="320" height="480"
                                                  th:src="${album.getCoverUrl()}"
@@ -102,7 +102,7 @@
                                              class="lazyload attachment-360x480 size-360x480 wp-post-image"
                                              th:alt="${album.getTitle()}"/> </a></div>
                                 <h3>
-                                    <a href="#"
+                                    <a th:href="|/post_id/${album.getId()}/|"
                                        th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
                                 </h3>
                             </li>

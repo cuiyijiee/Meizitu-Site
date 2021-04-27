@@ -1,7 +1,6 @@
 package me.cuiyijie.nongmo.service;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
-import com.redfin.sitemapgenerator.W3CDateFormat;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 import me.cuiyijie.nongmo.dao.AlbumDao;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
 
 /**
  * @author cyj976655@gmail.com
@@ -26,13 +24,14 @@ public class SitemapService {
     private static final String BASE_URL = "https://www.ilovexs.com";
     private static final String CATEGORY_BASE_URL = "https://www.ilovexs.com/category/%s/";
     private static final String ALBUM_BASE_URL = "https://www.ilovexs.com/post/%s/";
+    private static final String NEW_ALBUM_BASE_URL = "https://www.ilovexs.com/post_id/%s/";
 
     @Autowired
     CategoryDao categoryDao;
     @Autowired
     AlbumDao albumDao;
 
-    public String genSitemapWithIndex(int index) {
+    public String genSitemapWithIndex(int index, boolean isNew) {
         try {
             WebSitemapGenerator sitemap = new WebSitemapGenerator(BASE_URL);
 
@@ -47,10 +46,17 @@ public class SitemapService {
                 sitemap.addUrl(webSitemapUrl);
             }
             for (Album album : albumDao.findAll(PageRequest.of(index, 1000))) {
-                WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(ALBUM_BASE_URL, album.getTitle()))
-                        .lastMod(toDateString(album.getCreatedAt()))
-                        .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
-                sitemap.addUrl(webSitemapUrl);
+                if (isNew){
+                    WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(NEW_ALBUM_BASE_URL, album.getId()))
+                            .lastMod(toDateString(album.getCreatedAt()))
+                            .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
+                    sitemap.addUrl(webSitemapUrl);
+                }else{
+                    WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(ALBUM_BASE_URL, album.getTitle()))
+                            .lastMod(toDateString(album.getCreatedAt()))
+                            .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
+                    sitemap.addUrl(webSitemapUrl);
+                }
             }
             return String.join("", sitemap.writeAsStrings());
         } catch (Exception exception) {

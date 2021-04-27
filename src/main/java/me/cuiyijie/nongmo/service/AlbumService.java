@@ -66,15 +66,23 @@ public class AlbumService {
     }
 
     public Optional<Album> findByName(String name) {
-        Specification<Album> albumSpecification = new Specification<Album>() {
-            @Override
-            public Predicate toPredicate(Root<Album> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                //集合 用于封装查询条件
-                List<Predicate> list = new ArrayList<Predicate>();
-                Predicate predicate = criteriaBuilder.equal(root.get("title").as(String.class), name);
-                list.add(predicate);
-                return criteriaBuilder.and(list.toArray(new Predicate[0]));
-            }
+        Specification<Album> albumSpecification = (root, query, criteriaBuilder) -> {
+            //集合 用于封装查询条件
+            List<Predicate> list = new ArrayList<Predicate>();
+            Predicate predicate = criteriaBuilder.equal(root.get("title").as(String.class), name);
+            list.add(predicate);
+            return criteriaBuilder.and(list.toArray(new Predicate[0]));
+        };
+        return albumDao.findOne(albumSpecification);
+    }
+
+    public Optional<Album> findById(long albumId) {
+        Specification<Album> albumSpecification = (root, query, criteriaBuilder) -> {
+            //集合 用于封装查询条件
+            List<Predicate> list = new ArrayList<>();
+            Predicate predicate = criteriaBuilder.equal(root.get("id").as(Long.class), albumId);
+            list.add(predicate);
+            return criteriaBuilder.and(list.toArray(new Predicate[0]));
         };
         return albumDao.findOne(albumSpecification);
     }
