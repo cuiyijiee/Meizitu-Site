@@ -18,10 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author cyj976655@gmail.com
@@ -116,19 +113,25 @@ public class AlbumService {
 
     public List<Album> getLatestPopularAlbum() {
         long nowTimestamp = System.currentTimeMillis();
-        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000) {
+        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
             lastObtainLatestTimestamp = nowTimestamp;
             latestPopularTenAlbum =
-                    albumDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "viewNum"))).toList();
+                    albumDao.findAll(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "viewNum"))).toList();
         }
-        return latestPopularTenAlbum;
+        List<Album> result = new ArrayList<>();
+        for (int index = 0; index < 10; index++) {
+            int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
+            result.add(latestPopularTenAlbum.get(randomAlbumIndex));
+        }
+        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
+        return result;
     }
 
     public List<Album> findAlbumByTitleBy(String title) {
         return albumDao.findByTitleLike(title);
     }
 
-    public int addView(Long id){
+    public int addView(Long id) {
         return albumDao.updateAllView(id);
     }
 }

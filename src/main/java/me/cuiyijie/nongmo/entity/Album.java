@@ -3,9 +3,7 @@ package me.cuiyijie.nongmo.entity;
 import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * @author cyj976655@gmail.com
