@@ -35,6 +35,9 @@ public class Album {
     private Category category;
 
     @Column
+    private Integer viewNum;
+
+    @Column
     private OffsetDateTime createdAt;
 
     public Long getId() {
@@ -97,6 +100,14 @@ public class Album {
         this.createdAt = createdAt;
     }
 
+    public Integer getViewNum() {
+        return viewNum;
+    }
+
+    public void setViewNum(Integer viewNum) {
+        this.viewNum = viewNum;
+    }
+
     @Override
     public String toString() {
         return "Album{" +
@@ -105,7 +116,8 @@ public class Album {
                 ", coverUrl='" + coverUrl + '\'' +
                 ", albumUrl='" + albumUrl + '\'' +
                 ", title='" + title + '\'' +
-                ", category='" + category + '\'' +
+                ", category=" + category +
+                ", viewNum=" + viewNum +
                 ", createdAt=" + createdAt +
                 '}';
     }

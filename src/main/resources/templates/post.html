@@ -3,6 +3,11 @@
 <head th:include="base :: htmlHead(pageTitle = ${album.getTitle()})">
 </head>
 <body class="post-template-default single single-post postid-53242 single-format-standard custom-background">
+<script>
+    $.get("/view?id=" + [[${album.getId()}]], function (result) {
+        console.log("view: " + result);
+    });
+</script>
 <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 <div id="page" class="hfeed site full">
     <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
@@ -69,7 +74,9 @@
                             </script>
                             <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
                             <noscript>
-                                <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+                                <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript"
+                                        width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
+                                        frameborder="0"></iframe>
                             </noscript>
                         </div>
                     </div>

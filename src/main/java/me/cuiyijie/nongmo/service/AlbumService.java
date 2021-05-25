@@ -41,6 +41,7 @@ public class AlbumService {
 
     private long lastObtainLatestTimestamp = 0;
     private List<Album> latestTenAlbum = new ArrayList<>();
+    private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
     public PageUtil.PageResp<Album> pageFind(Pageable pageable) {
         return PageUtil.convertFromPage(albumDao.findAll(pageable));
@@ -108,12 +109,26 @@ public class AlbumService {
         if (nowTimestamp - lastObtainLatestTimestamp > 60 * 60 * 1000) {
             lastObtainLatestTimestamp = nowTimestamp;
             latestTenAlbum =
-                    albumDao.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "createdAt"))).toList();
+                    albumDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "createdAt"))).toList();
         }
         return latestTenAlbum;
     }
 
-    public List<Album> findAlbumByTitleBy(String title){
+    public List<Album> getLatestPopularAlbum() {
+        long nowTimestamp = System.currentTimeMillis();
+        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000) {
+            lastObtainLatestTimestamp = nowTimestamp;
+            latestPopularTenAlbum =
+                    albumDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "viewNum"))).toList();
+        }
+        return latestPopularTenAlbum;
+    }
+
+    public List<Album> findAlbumByTitleBy(String title) {
         return albumDao.findByTitleLike(title);
+    }
+
+    public int addView(Long id){
+        return albumDao.updateAllView(id);
     }
 }

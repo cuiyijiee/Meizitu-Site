@@ -15,6 +15,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class MainController {
                 Sort.by(Sort.Direction.DESC, "createdAt"));
         PageUtil.PageResp<Album> albumPageResp = albumService.pageFind(pageable);
         model.addAttribute("albumPage", albumPageResp);
-        List<Album> latestAlbum = albumService.getLatestTenAlbum();
+        List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
         return "index";
     }
@@ -56,7 +57,7 @@ public class MainController {
         PageUtil.PageResp<Album> albumPageResp =
                 albumService.pageFindByCategory(categoryName, pageable);
         model.addAttribute("albumPage", albumPageResp);
-        List<Album> latestAlbum = albumService.getLatestTenAlbum();
+        List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
         model.addAttribute("category", categoryName);
         return "index";
@@ -76,7 +77,7 @@ public class MainController {
             List<Picture> pictures = albumService.findAllPicture(album.getId());
             model.addAttribute("album", album);
             model.addAttribute("pictures", pictures);
-            List<Album> latestAlbum = albumService.getLatestTenAlbum();
+            List<Album> latestAlbum = albumService.getLatestPopularAlbum();
             model.addAttribute("latestAlbum", latestAlbum);
         } else {
 
@@ -92,7 +93,7 @@ public class MainController {
             List<Picture> pictures = albumService.findAllPicture(album.getId());
             model.addAttribute("album", album);
             model.addAttribute("pictures", pictures);
-            List<Album> latestAlbum = albumService.getLatestTenAlbum();
+            List<Album> latestAlbum = albumService.getLatestPopularAlbum();
             model.addAttribute("latestAlbum", latestAlbum);
         } else {
 
@@ -117,4 +118,10 @@ public class MainController {
         return "search";
     }
 
+    @ResponseBody
+    @RequestMapping(value = {"view"})
+    public String addView(@RequestParam Long id) {
+        albumService.addView(id);
+        return "ok";
+    }
 }
