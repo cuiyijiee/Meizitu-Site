@@ -12,7 +12,4 @@ import java.util.List;
  * @date 2021/1/17 12:53
  */
 public interface PictureDao extends JpaRepository<Picture, Long>, JpaSpecificationExecutor<Picture> {
-
-    @Query("select p from Picture p where p.albumId = ?1")
-    List<Picture> findByAlbumId(long albumId);
 }

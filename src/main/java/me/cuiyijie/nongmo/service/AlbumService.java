@@ -1,5 +1,7 @@
 package me.cuiyijie.nongmo.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.CategoryDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
@@ -41,6 +43,10 @@ public class AlbumService {
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
     public PageUtil.PageResp<Album> pageFind(Pageable pageable) {
+
+        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+        Page<Album> result = albumDao.findAll();
+
         return PageUtil.convertFromPage(albumDao.findAll(pageable));
     }
 
@@ -72,7 +78,7 @@ public class AlbumService {
             return criteriaBuilder.and(list.toArray(new Predicate[0]));
         };
         return albumDao.findOne(albumSpecification);
-    }
+    };
 
     public Optional<Album> findById(long albumId) {
         Specification<Album> albumSpecification = (root, query, criteriaBuilder) -> {
@@ -132,6 +138,6 @@ public class AlbumService {
     }
 
     public int addView(Long id) {
-        return albumDao.updateAllView(id);
+        return albumDao.addViewNum(id);
     }
 }

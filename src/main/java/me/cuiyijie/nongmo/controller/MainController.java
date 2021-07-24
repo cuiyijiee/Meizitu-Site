@@ -11,14 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.HandlerMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -39,7 +36,7 @@ public class MainController {
 
     @RequestMapping(value = {"/page/{page}", "/"})
     public String index(Model model, @PathVariable(value = "page") Optional<Integer> maybePage) {
-        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 20,
+        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 10,
                 Sort.by(Sort.Direction.DESC, "createdAt"));
         PageUtil.PageResp<Album> albumPageResp = albumService.pageFind(pageable);
         model.addAttribute("albumPage", albumPageResp);
@@ -52,7 +49,7 @@ public class MainController {
     public String showCategory(Model model,
                                @PathVariable(value = "category") String categoryName,
                                @PathVariable(value = "page") Optional<Integer> maybePage) {
-        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 20,
+        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 10,
                 Sort.by(Sort.Direction.DESC, "createdAt"));
         PageUtil.PageResp<Album> albumPageResp =
                 albumService.pageFindByCategory(categoryName, pageable);
@@ -100,13 +97,6 @@ public class MainController {
         }
         return "post";
     }
-
-    private String extractPathFromPattern(final HttpServletRequest request) {
-        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-        return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
-    }
-
 
     @RequestMapping(value = {"search"})
     public String search(Model model, @RequestParam String key) {
