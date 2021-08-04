@@ -36,9 +36,8 @@ public class MainController {
 
     @RequestMapping(value = {"/page/{page}", "/"})
     public String index(Model model, @PathVariable(value = "page") Optional<Integer> maybePage) {
-        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 10,
-                Sort.by(Sort.Direction.DESC, "createdAt"));
-        PageUtil.PageResp<Album> albumPageResp = albumService.pageFind(pageable);
+        PageUtil.PageResp<Album> albumPageResp =
+                albumService.pageFind(maybePage.orElse(1), 10);
         model.addAttribute("albumPage", albumPageResp);
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
@@ -49,10 +48,8 @@ public class MainController {
     public String showCategory(Model model,
                                @PathVariable(value = "category") String categoryName,
                                @PathVariable(value = "page") Optional<Integer> maybePage) {
-        Pageable pageable = PageRequest.of(maybePage.map(integer -> integer - 1).orElse(0), 10,
-                Sort.by(Sort.Direction.DESC, "createdAt"));
         PageUtil.PageResp<Album> albumPageResp =
-                albumService.pageFindByCategory(categoryName, pageable);
+                albumService.pageFindByCategory(maybePage.orElse(1), 10, categoryName);
         model.addAttribute("albumPage", albumPageResp);
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);

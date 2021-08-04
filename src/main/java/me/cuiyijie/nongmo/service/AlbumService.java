@@ -42,53 +42,34 @@ public class AlbumService {
     private List<Album> latestTenAlbum = new ArrayList<>();
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
-    public PageUtil.PageResp<Album> pageFind(Pageable pageable) {
-
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
-        Page<Album> result = albumDao.findAll();
-
-        return PageUtil.convertFromPage(albumDao.findAll(pageable));
+    public PageUtil.PageResp<Album> pageFind(Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize, "created_at DESC");
+        Page<Album> result = albumDao.findAll(new Album());
+        return PageUtil.convertFromPage(result);
     }
 
-    public PageUtil.PageResp<Album> pageFindByCategory(String categoryName, Pageable pageable) {
+    public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum,Integer pageSize,String categoryName) {
         Category category = categoryDao.findByCategory(categoryName);
+        PageHelper.startPage(pageNum,pageSize);
         if (category == null) {
-            return PageUtil.convertFromPage(albumDao.findAll(pageable));
+            return PageUtil.convertFromPage(albumDao.findAll(new Album()));
         } else {
-            Specification<Album> specification = new Specification<Album>() {
-                @Override
-                public Predicate toPredicate(Root<Album> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                    //集合 用于封装查询条件
-                    List<Predicate> list = new ArrayList<Predicate>();
-                    Predicate predicate = criteriaBuilder.equal(root.get("category").as(Category.class), category);
-                    list.add(predicate);
-                    return criteriaBuilder.and(list.toArray(new Predicate[0]));
-                }
-            };
-            return PageUtil.convertFromPage(albumDao.findAll(specification, pageable));
+            Album album = new Album();
+            album.setCategory(category.getId());
+            return PageUtil.convertFromPage(albumDao.findAll(album));
         }
     }
 
     public Optional<Album> findByName(String name) {
-        Specification<Album> albumSpecification = (root, query, criteriaBuilder) -> {
-            //集合 用于封装查询条件
-            List<Predicate> list = new ArrayList<Predicate>();
-            Predicate predicate = criteriaBuilder.equal(root.get("title").as(String.class), name);
-            list.add(predicate);
-            return criteriaBuilder.and(list.toArray(new Predicate[0]));
-        };
-        return albumDao.findOne(albumSpecification);
-    };
+        Album album = new Album();
+        album.setTitle(name);
+        return albumDao.findAll(album).stream().findFirst();
+    }
 
     public Optional<Album> findById(long albumId) {
-        Specification<Album> albumSpecification = (root, query, criteriaBuilder) -> {
-            //集合 用于封装查询条件
-            List<Predicate> list = new ArrayList<>();
-            Predicate predicate = criteriaBuilder.equal(root.get("id").as(Long.class), albumId);
-            list.add(predicate);
-            return criteriaBuilder.and(list.toArray(new Predicate[0]));
-        };
-        return albumDao.findOne(albumSpecification);
+        Album album = new Album();
+        album.setId(albumId);
+        return albumDao.findAll(album).stream().findFirst();
     }
 
     public List<Picture> findAllPicture(long albumId) {
@@ -107,29 +88,19 @@ public class AlbumService {
         return pictures;
     }
 
-    public List<Album> getLatestTenAlbum() {
-        long nowTimestamp = System.currentTimeMillis();
-        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 60 * 1000) {
-            lastObtainLatestTimestamp = nowTimestamp;
-            latestTenAlbum =
-                    albumDao.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "createdAt"))).toList();
-        }
-        return latestTenAlbum;
-    }
-
     public List<Album> getLatestPopularAlbum() {
         long nowTimestamp = System.currentTimeMillis();
         if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
             lastObtainLatestTimestamp = nowTimestamp;
-            latestPopularTenAlbum =
-                    albumDao.findAll(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "viewNum"))).toList();
+            PageHelper.startPage(0,100,"view_num DESC");
+            latestPopularTenAlbum = albumDao.findAll(new Album());
         }
         List<Album> result = new ArrayList<>();
-        for (int index = 0; index < 10; index++) {
-            int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
-            result.add(latestPopularTenAlbum.get(randomAlbumIndex));
-        }
-        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
+//        for (int index = 0; index < 10; index++) {
+//            int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
+//            result.add(latestPopularTenAlbum.get(randomAlbumIndex));
+//        }
+//        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
         return result;
     }
 

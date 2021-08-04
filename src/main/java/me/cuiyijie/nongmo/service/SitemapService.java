@@ -1,5 +1,6 @@
 package me.cuiyijie.nongmo.service;
 
+import com.github.pagehelper.PageHelper;
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * @author cyj976655@gmail.com
@@ -45,7 +47,10 @@ public class SitemapService {
                         .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
                 sitemap.addUrl(webSitemapUrl);
             }
-            for (Album album : albumDao.findAll(PageRequest.of(index, 1000))) {
+            PageHelper.startPage(index,1000);
+            List<Album> albumList = albumDao.findAll(new Album());
+            PageHelper.clearPage();
+            for (Album album : albumList) {
                 if (isNew){
                     WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(NEW_ALBUM_BASE_URL, album.getId()))
                             .lastMod(toDateString(album.getCreatedAt()))

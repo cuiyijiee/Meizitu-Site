@@ -1,5 +1,6 @@
 package me.cuiyijie.nongmo.dao;
 
+import com.github.pagehelper.Page;
 import me.cuiyijie.nongmo.entity.Album;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.List;
 @Repository
 public interface AlbumDao {
 
-    List<Album> findAll();
+    Page<Album> findAll(@Param("item") Album album);
 
     List<Album> findByTitleLike(@Param("title") String title);
 

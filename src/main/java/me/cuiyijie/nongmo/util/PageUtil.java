@@ -11,7 +11,17 @@ import java.util.List;
 public class PageUtil {
 
     public static <T> PageResp<T> convertFromPage(Page<T> page) {
-        return new PageResp<>(page.getTotalElements(), page.getPageable().getPageNumber(), page.getPageable().getPageSize(), page.getContent());
+        return new PageResp<>(page.getTotalElements(),
+                page.getPageable().getPageNumber(),
+                page.getPageable().getPageSize(),
+                page.getContent());
+    }
+
+    public static <T> PageResp<T> convertFromPage(com.github.pagehelper.Page<T> page) {
+        return new PageResp<>(page.getTotal(),
+                page.getPageNum(),
+                page.getPageSize(),
+                page.getResult());
     }
 
     public static class PageResp<T> {
