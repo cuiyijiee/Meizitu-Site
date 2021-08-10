@@ -1,7 +1,5 @@
 package me.cuiyijie.nongmo.util;
 
-import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 /**
@@ -9,13 +7,6 @@ import java.util.List;
  * @date 2021/1/10 21:41
  */
 public class PageUtil {
-
-    public static <T> PageResp<T> convertFromPage(Page<T> page) {
-        return new PageResp<>(page.getTotalElements(),
-                page.getPageable().getPageNumber(),
-                page.getPageable().getPageSize(),
-                page.getContent());
-    }
 
     public static <T> PageResp<T> convertFromPage(com.github.pagehelper.Page<T> page) {
         return new PageResp<>(page.getTotal(),

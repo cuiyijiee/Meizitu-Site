@@ -3,24 +3,18 @@ package me.cuiyijie.nongmo.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import me.cuiyijie.nongmo.dao.AlbumDao;
-import me.cuiyijie.nongmo.dao.CategoryDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
 import me.cuiyijie.nongmo.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author cyj976655@gmail.com
@@ -33,13 +27,12 @@ public class AlbumService {
     AlbumDao albumDao;
 
     @Autowired
-    CategoryDao categoryDao;
+    CategoryService categoryService;
 
     @Autowired
     PictureDao pictureDao;
 
     private long lastObtainLatestTimestamp = 0;
-    private List<Album> latestTenAlbum = new ArrayList<>();
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
     public PageUtil.PageResp<Album> pageFind(Integer pageNum,Integer pageSize) {
@@ -49,7 +42,7 @@ public class AlbumService {
     }
 
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum,Integer pageSize,String categoryName) {
-        Category category = categoryDao.findByCategory(categoryName);
+        Category category = categoryService.findByName(categoryName);
         PageHelper.startPage(pageNum,pageSize);
         if (category == null) {
             return PageUtil.convertFromPage(albumDao.findAll(new Album()));
@@ -73,17 +66,9 @@ public class AlbumService {
     }
 
     public List<Picture> findAllPicture(long albumId) {
-        Specification<Picture> pictureSpecification = new Specification<Picture>() {
-            @Override
-            public Predicate toPredicate(Root<Picture> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                //集合 用于封装查询条件
-                List<Predicate> list = new ArrayList<Predicate>();
-                Predicate predicate = criteriaBuilder.equal(root.get("albumId").as(Long.class), albumId);
-                list.add(predicate);
-                return criteriaBuilder.and(list.toArray(new Predicate[0]));
-            }
-        };
-        List<Picture> pictures = pictureDao.findAll(pictureSpecification);
+        Picture picture = new Picture();
+        picture.setAlbumId(albumId);
+        List<Picture> pictures = pictureDao.findAll(picture);
         pictures.sort(Comparator.comparingInt(Picture::getIndex));
         return pictures;
     }

@@ -19,10 +19,12 @@ public class CategoryService {
     CategoryDao categoryDao;
 
     public List<Category> findAll() {
-        return categoryDao.findAll();
+        return categoryDao.findAll(new Category());
     }
 
     public Category findByName(String categoryName) {
-        return categoryDao.findByCategory(categoryName);
+        Category category = new Category();
+        category.setName(categoryName);
+        return categoryDao.findAll(category).stream().findFirst().get();
     }
 }

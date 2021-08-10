@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.nongmo.dao.CategoryDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.nongmo.entity.Category">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="map">
+        SELECT *
+        FROM category
+        WHERE 1=1
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.name != null and item.name != ''">
+            AND name = #{item.name}
+        </if>
+    </select>
+
+</mapper>

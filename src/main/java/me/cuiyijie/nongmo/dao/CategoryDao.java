@@ -1,10 +1,10 @@
 package me.cuiyijie.nongmo.dao;
 
 import me.cuiyijie.nongmo.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author cyj976655@gmail.com
@@ -12,9 +12,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface CategoryDao extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category> {
+public interface CategoryDao {
 
-    @Query("select c from Category c where c.name = ?1")
-    Category findByCategory(String category);
+    List<Category> findAll(@Param("item") Category category);
 
 }

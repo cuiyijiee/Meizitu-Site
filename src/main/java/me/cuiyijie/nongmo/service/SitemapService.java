@@ -5,11 +5,9 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 import me.cuiyijie.nongmo.dao.AlbumDao;
-import me.cuiyijie.nongmo.dao.CategoryDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -29,7 +27,7 @@ public class SitemapService {
     private static final String NEW_ALBUM_BASE_URL = "https://www.ilovexs.com/post_id/%s/";
 
     @Autowired
-    CategoryDao categoryDao;
+    CategoryService categoryService;
     @Autowired
     AlbumDao albumDao;
 
@@ -41,7 +39,7 @@ public class SitemapService {
                     .lastMod(toDateString(OffsetDateTime.now()))
                     .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
             sitemap.addUrl(indexWebSitemapUrl);
-            for (Category category : categoryDao.findAll()) {
+            for (Category category : categoryService.findAll()) {
                 WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(CATEGORY_BASE_URL, category.getName()))
                         .lastMod(toDateString(category.getCreatedAt()))
                         .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
