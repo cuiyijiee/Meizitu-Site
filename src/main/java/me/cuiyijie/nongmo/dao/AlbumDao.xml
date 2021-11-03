@@ -15,7 +15,7 @@
     <select id="findAll" resultMap="BaseResultMap" parameterType="map">
         SELECT *
         FROM album
-        WHERE 1=1
+        WHERE enabled=1
         <if test="item.id !=null">
             AND id=#{item.id,jdbcType=INTEGER}
         </if>
@@ -30,7 +30,8 @@
     <select id="findByTitleLike" resultMap="BaseResultMap" parameterType="map">
         SELECT *
         FROM album
-        WHERE title LIKE #{title}
+        WHERE enabled = 1
+          and title LIKE CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
         ORDER BY id
     </select>
 

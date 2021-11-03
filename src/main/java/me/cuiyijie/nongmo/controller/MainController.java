@@ -1,11 +1,13 @@
 package me.cuiyijie.nongmo.controller;
 
 import me.cuiyijie.nongmo.entity.Album;
+import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
 import me.cuiyijie.nongmo.service.AlbumService;
 import me.cuiyijie.nongmo.service.CategoryService;
 import me.cuiyijie.nongmo.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,9 @@ import java.util.Optional;
 @Controller
 public class MainController {
 
+    @Value("${nongmo.default.pagesize:30}")
+    private Integer defaultPageSize;
+
     @Autowired
     CategoryService categoryService;
 
@@ -34,7 +39,7 @@ public class MainController {
     @RequestMapping(value = {"/page/{page}", "/"})
     public String index(Model model, @PathVariable(value = "page") Optional<Integer> maybePage) {
         PageUtil.PageResp<Album> albumPageResp =
-                albumService.pageFind(maybePage.orElse(1), 10);
+                albumService.pageFind(maybePage.orElse(1), defaultPageSize);
         model.addAttribute("albumPage", albumPageResp);
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
@@ -46,7 +51,7 @@ public class MainController {
                                @PathVariable(value = "category") String categoryName,
                                @PathVariable(value = "page") Optional<Integer> maybePage) {
         PageUtil.PageResp<Album> albumPageResp =
-                albumService.pageFindByCategory(maybePage.orElse(1), 10, categoryName);
+                albumService.pageFindByCategory(maybePage.orElse(1), defaultPageSize, categoryName);
         model.addAttribute("albumPage", albumPageResp);
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
@@ -65,6 +70,8 @@ public class MainController {
         Optional<Album> maybeAlbum = albumService.findByName(realName);
         if (maybeAlbum.isPresent()) {
             Album album = maybeAlbum.get();
+            Category category = categoryService.findById(album.getCategory());
+            model.addAttribute("category", category);
             List<Picture> pictures = albumService.findAllPicture(album.getId());
             model.addAttribute("album", album);
             model.addAttribute("pictures", pictures);
@@ -81,8 +88,10 @@ public class MainController {
         Optional<Album> maybeAlbum = albumService.findById(postId);
         if (maybeAlbum.isPresent()) {
             Album album = maybeAlbum.get();
+            Category category = categoryService.findById(album.getCategory());
             List<Picture> pictures = albumService.findAllPicture(album.getId());
             model.addAttribute("album", album);
+            model.addAttribute("category", category);
             model.addAttribute("pictures", pictures);
             List<Album> latestAlbum = albumService.getLatestPopularAlbum();
             model.addAttribute("latestAlbum", latestAlbum);

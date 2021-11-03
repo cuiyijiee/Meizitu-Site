@@ -64,7 +64,7 @@
                             <div class="nav-links">
                                 <div th:if="${category == null}">
                                     <div class="nav-previous" th:if="${albumPage.hasNext()}"><a
-                                            th:href="|/page/${albumPage.getNext()}/|">Older posts</a>
+                                            th:href="|/page/${albumPage.getNext()}/|"><-Older posts</a>
                                     </div>
 
                                     <div class="nav-next" th:if="${albumPage.hasPre()}"><a

@@ -2,6 +2,8 @@ package me.cuiyijie.nongmo.entity;
 
 import lombok.Data;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 
 /**
@@ -10,6 +12,7 @@ import java.time.OffsetDateTime;
  */
 @Data
 public class Album {
+
     private Long id;
     private String originId;
     private String coverUrl;
@@ -18,4 +21,5 @@ public class Album {
     private Long category;
     private Integer viewNum;
     private OffsetDateTime createdAt;
+
 }

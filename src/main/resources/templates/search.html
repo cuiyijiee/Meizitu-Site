@@ -28,7 +28,7 @@
                             <article th:id="${album.getId()}"
                                      class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
                                 <div class="post-thumbnail">
-                                    <a th:href="|/post/${album.getUrlEncodedTitle()}/|">
+                                    <a th:href="|/post_id/${album.getId()}/|">
                                         <img width="400" height="600"
                                              class="attachment-post-thumbnails size-post-thumbnails wp-post-image"
                                              action th:src="${album.getCoverUrl()}"
@@ -38,7 +38,7 @@
                                 <div class="card-body">
                                     <header class="entry-header">
                                         <div class="title-meta-wrapper"><h2 class="entry-title"><a
-                                                th:href="|/post/${album.getUrlEncodedTitle()}/|"
+                                                th:href="|/post_id/${album.getId()}/|"
                                                 rel="bookmark" th:text="${album.getTitle()}">title</a>
                                         </h2>
                                             <ul class="entry-meta">

@@ -38,19 +38,18 @@ public class AlbumService {
     public PageUtil.PageResp<Album> pageFind(Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize, "created_at DESC");
         Page<Album> result = albumDao.findAll(new Album());
+        PageHelper.clearPage();
         return PageUtil.convertFromPage(result);
     }
 
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum,Integer pageSize,String categoryName) {
         Category category = categoryService.findByName(categoryName);
-        PageHelper.startPage(pageNum,pageSize);
-        if (category == null) {
-            return PageUtil.convertFromPage(albumDao.findAll(new Album()));
-        } else {
-            Album album = new Album();
-            album.setCategory(category.getId());
-            return PageUtil.convertFromPage(albumDao.findAll(album));
-        }
+        PageHelper.startPage(pageNum,pageSize,"created_at DESC");
+        Album album = new Album();
+        album.setCategory(category == null ? null : category.getId());
+        Page<Album> albums = albumDao.findAll(album);
+        PageHelper.clearPage();
+        return PageUtil.convertFromPage(albums);
     }
 
     public Optional<Album> findByName(String name) {
@@ -77,15 +76,18 @@ public class AlbumService {
         long nowTimestamp = System.currentTimeMillis();
         if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
             lastObtainLatestTimestamp = nowTimestamp;
-            PageHelper.startPage(0,100,"view_num DESC");
+            PageHelper.startPage(1,100,"view_num DESC");
             latestPopularTenAlbum = albumDao.findAll(new Album());
+            PageHelper.clearPage();
         }
         List<Album> result = new ArrayList<>();
-//        for (int index = 0; index < 10; index++) {
-//            int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
-//            result.add(latestPopularTenAlbum.get(randomAlbumIndex));
-//        }
-//        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
+        if(latestPopularTenAlbum.size() > 0){
+            for (int index = 0; index < 10; index++) {
+                int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
+                result.add(latestPopularTenAlbum.get(randomAlbumIndex));
+            }
+        }
+        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
         return result;
     }
 

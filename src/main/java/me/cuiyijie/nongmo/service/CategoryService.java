@@ -27,4 +27,10 @@ public class CategoryService {
         category.setName(categoryName);
         return categoryDao.findAll(category).stream().findFirst().get();
     }
+
+    public Category findById(Long categoryId) {
+        Category category = new Category();
+        category.setId(categoryId);
+        return categoryDao.findAll(category).stream().findFirst().get();
+    }
 }
