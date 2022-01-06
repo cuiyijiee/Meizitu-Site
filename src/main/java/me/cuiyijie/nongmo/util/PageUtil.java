@@ -1,5 +1,7 @@
 package me.cuiyijie.nongmo.util;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import java.util.List;
 
 /**
@@ -8,22 +10,22 @@ import java.util.List;
  */
 public class PageUtil {
 
-    public static <T> PageResp<T> convertFromPage(com.github.pagehelper.Page<T> page) {
-        return new PageResp<>(page.getTotal(),
-                page.getPageNum(),
-                page.getPageSize(),
-                page.getResult());
+    public static <T> PageResp<T> convertFromPage(IPage<T> page) {
+        return new PageResp<T>(page.getTotal(),
+                page.getCurrent(),
+                page.getSize(),
+                page.getRecords());
     }
 
     public static class PageResp<T> {
 
         public Long total;
-        public Integer current;
-        public Integer pageSize;
+        public Long current;
+        public Long pageSize;
         public List<T> data;
 
 
-        public PageResp(Long total, Integer current, Integer pageSize, List<T> data) {
+        public PageResp(Long total, Long current, Long pageSize, List<T> data) {
             this.total = total;
             this.current = current;
             this.pageSize = pageSize;
@@ -38,19 +40,19 @@ public class PageUtil {
             this.total = total;
         }
 
-        public Integer getCurrent() {
+        public Long getCurrent() {
             return current;
         }
 
-        public void setCurrent(Integer current) {
+        public void setCurrent(Long current) {
             this.current = current;
         }
 
-        public Integer getPageSize() {
+        public Long getPageSize() {
             return pageSize;
         }
 
-        public void setPageSize(Integer pageSize) {
+        public void setPageSize(Long pageSize) {
             this.pageSize = pageSize;
         }
 
@@ -63,19 +65,19 @@ public class PageUtil {
         }
 
         public boolean hasPre() {
-            return this.current > 0;
+            return this.current > 1;
         }
 
-        public Integer getPre() {
-            return this.current;
+        public Long getPre() {
+            return this.current - 1;
         }
 
         public boolean hasNext() {
-            return this.current < Math.ceil(this.total / this.pageSize);
+            return this.current <= Math.ceil(this.total / this.pageSize);
         }
 
-        public Integer getNext() {
-            return this.current + 2;
+        public Long getNext() {
+            return this.current + 1;
         }
 
     }

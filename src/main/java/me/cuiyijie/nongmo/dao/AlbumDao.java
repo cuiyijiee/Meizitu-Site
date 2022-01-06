@@ -1,6 +1,6 @@
 package me.cuiyijie.nongmo.dao;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.cuiyijie.nongmo.entity.Album;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,9 +12,9 @@ import java.util.List;
  * @date 2021/1/10 21:38
  */
 @Repository
-public interface AlbumDao {
+public interface AlbumDao extends BaseMapper<Album> {
 
-    Page<Album> findAll(@Param("item") Album album);
+    List<Album> findAll(@Param("item") Album album);
 
     List<Album> findByTitleLike(@Param("title") String title);
 

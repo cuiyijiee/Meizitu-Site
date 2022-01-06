@@ -1,7 +1,7 @@
 package me.cuiyijie.nongmo.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
 import me.cuiyijie.nongmo.entity.Album;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author cyj976655@gmail.com
@@ -35,53 +34,44 @@ public class AlbumService {
     private long lastObtainLatestTimestamp = 0;
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
-    public PageUtil.PageResp<Album> pageFind(Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize, "created_at DESC");
-        Page<Album> result = albumDao.findAll(new Album());
-        PageHelper.clearPage();
-        return PageUtil.convertFromPage(result);
+    public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
+        Page<Album> page = new Page<>(pageNum, pageSize);
+        page.setDesc("created_at");
+        albumDao.selectPage(page, new QueryWrapper<>());
+        return PageUtil.convertFromPage(page);
     }
 
-    public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum,Integer pageSize,String categoryName) {
+    public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
         Category category = categoryService.findByName(categoryName);
-        PageHelper.startPage(pageNum,pageSize,"created_at DESC");
-        Album album = new Album();
-        album.setCategory(category == null ? null : category.getId());
-        Page<Album> albums = albumDao.findAll(album);
-        PageHelper.clearPage();
-        return PageUtil.convertFromPage(albums);
+        Page<Album> page = new Page<>(pageNum, pageSize);
+        page.setDesc("created_at");
+        albumDao.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
+        return PageUtil.convertFromPage(page);
     }
 
-    public Optional<Album> findByName(String name) {
+    public Album findByName(String name) {
         Album album = new Album();
         album.setTitle(name);
-        return albumDao.findAll(album).stream().findFirst();
+        return albumDao.selectOne(new QueryWrapper<Album>().eq("title", name));
     }
 
-    public Optional<Album> findById(long albumId) {
-        Album album = new Album();
-        album.setId(albumId);
-        return albumDao.findAll(album).stream().findFirst();
+    public Album findById(long albumId) {
+        return albumDao.selectById(albumId);
     }
 
     public List<Picture> findAllPicture(long albumId) {
-        Picture picture = new Picture();
-        picture.setAlbumId(albumId);
-        List<Picture> pictures = pictureDao.findAll(picture);
-        pictures.sort(Comparator.comparingInt(Picture::getIndex));
-        return pictures;
+        return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId).orderByAsc("pic_index"));
     }
 
     public List<Album> getLatestPopularAlbum() {
         long nowTimestamp = System.currentTimeMillis();
         if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
             lastObtainLatestTimestamp = nowTimestamp;
-            PageHelper.startPage(1,100,"view_num DESC");
-            latestPopularTenAlbum = albumDao.findAll(new Album());
-            PageHelper.clearPage();
+            Page<Album> page = new Page<>(1, 100);
+            latestPopularTenAlbum = albumDao.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();
         }
         List<Album> result = new ArrayList<>();
-        if(latestPopularTenAlbum.size() > 0){
+        if (latestPopularTenAlbum.size() > 0) {
             for (int index = 0; index < 10; index++) {
                 int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
                 result.add(latestPopularTenAlbum.get(randomAlbumIndex));
@@ -92,7 +82,7 @@ public class AlbumService {
     }
 
     public List<Album> findAlbumByTitleBy(String title) {
-        return albumDao.findByTitleLike(title);
+        return albumDao.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
     }
 
     public int addView(Long id) {

@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="albumId" property="albumId" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
-        <result column="index" property="index" jdbcType="INTEGER"/>
+        <result column="pic_index" property="picIndex" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="findAll" resultMap="BaseResultMap" parameterType="map">

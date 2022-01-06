@@ -12,6 +12,6 @@ public class Picture {
     private Long id;
     private Long albumId;
     private String url;
-    private Integer index;
+    private Integer picIndex;
 
 }

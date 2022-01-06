@@ -1,6 +1,7 @@
 package me.cuiyijie.nongmo.service;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
@@ -45,16 +46,15 @@ public class SitemapService {
                         .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
                 sitemap.addUrl(webSitemapUrl);
             }
-            PageHelper.startPage(index,1000);
-            List<Album> albumList = albumDao.findAll(new Album());
-            PageHelper.clearPage();
+            Page<Album> albumPage = new Page<>(index, 1000);
+            List<Album> albumList = albumDao.selectPage(albumPage, new QueryWrapper<Album>()).getRecords();
             for (Album album : albumList) {
-                if (isNew){
+                if (isNew) {
                     WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(NEW_ALBUM_BASE_URL, album.getId()))
                             .lastMod(toDateString(album.getCreatedAt()))
                             .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
                     sitemap.addUrl(webSitemapUrl);
-                }else{
+                } else {
                     WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(ALBUM_BASE_URL, album.getTitle()))
                             .lastMod(toDateString(album.getCreatedAt()))
                             .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();

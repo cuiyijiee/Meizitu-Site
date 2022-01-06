@@ -1,6 +1,8 @@
 package me.cuiyijie.nongmo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,6 +22,8 @@ public class Album {
     private String title;
     private Long category;
     private Integer viewNum;
+    @TableLogic
+    private Boolean enabled;
     private OffsetDateTime createdAt;
 
 }

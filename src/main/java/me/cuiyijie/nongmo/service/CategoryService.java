@@ -1,5 +1,6 @@
 package me.cuiyijie.nongmo.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import me.cuiyijie.nongmo.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,14 @@ public class CategoryService {
     CategoryDao categoryDao;
 
     public List<Category> findAll() {
-        return categoryDao.findAll(new Category());
+        return categoryDao.selectList(new QueryWrapper<>());
     }
 
     public Category findByName(String categoryName) {
-        Category category = new Category();
-        category.setName(categoryName);
-        return categoryDao.findAll(category).stream().findFirst().get();
+        return categoryDao.selectOne(new QueryWrapper<Category>().eq("name",categoryName));
     }
 
     public Category findById(Long categoryId) {
-        Category category = new Category();
-        category.setId(categoryId);
-        return categoryDao.findAll(category).stream().findFirst().get();
+        return categoryDao.selectById(categoryId);
     }
 }

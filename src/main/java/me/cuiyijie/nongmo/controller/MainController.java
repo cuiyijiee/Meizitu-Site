@@ -27,8 +27,11 @@ import java.util.Optional;
 @Controller
 public class MainController {
 
-    @Value("${nongmo.default.pagesize:30}")
+    @Value("${nongmo.default.pagesize:5}")
     private Integer defaultPageSize;
+
+    @Value("${nongmo.ad-on:false}")
+    private boolean isAdOn;
 
     @Autowired
     CategoryService categoryService;
@@ -41,8 +44,6 @@ public class MainController {
         PageUtil.PageResp<Album> albumPageResp =
                 albumService.pageFind(maybePage.orElse(1), defaultPageSize);
         model.addAttribute("albumPage", albumPageResp);
-        List<Album> latestAlbum = albumService.getLatestPopularAlbum();
-        model.addAttribute("latestAlbum", latestAlbum);
         return "index";
     }
 
@@ -50,33 +51,29 @@ public class MainController {
     public String showCategory(Model model,
                                @PathVariable(value = "category") String categoryName,
                                @PathVariable(value = "page") Optional<Integer> maybePage) {
+
+        initBaseModel(model);
+
         PageUtil.PageResp<Album> albumPageResp =
                 albumService.pageFindByCategory(maybePage.orElse(1), defaultPageSize, categoryName);
         model.addAttribute("albumPage", albumPageResp);
-        List<Album> latestAlbum = albumService.getLatestPopularAlbum();
-        model.addAttribute("latestAlbum", latestAlbum);
         model.addAttribute("category", categoryName);
         return "index";
     }
 
-    //    @RequestMapping(value = {"/post/{post}/**"})
-    //    public String post(Model model,
-    //                       @PathVariable(value = "post") String postName,
-    //                       HttpServletRequest request) throws UnsupportedEncodingException {
-    //        String realName = URLDecoder.decode(postName + "/" + extractPathFromPattern(request), "utf-8");
     @RequestMapping(value = {"/post/{post}/"})
     public String post(Model model, @PathVariable(value = "post") String postName) throws UnsupportedEncodingException {
+
+        initBaseModel(model);
+
         String realName = URLDecoder.decode(postName, "utf-8");
-        Optional<Album> maybeAlbum = albumService.findByName(realName);
-        if (maybeAlbum.isPresent()) {
-            Album album = maybeAlbum.get();
-            Category category = categoryService.findById(album.getCategory());
+        Album maybeAlbum = albumService.findByName(realName);
+        if (maybeAlbum != null) {
+            Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
-            List<Picture> pictures = albumService.findAllPicture(album.getId());
-            model.addAttribute("album", album);
+            List<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId());
+            model.addAttribute("album", maybeAlbum);
             model.addAttribute("pictures", pictures);
-            List<Album> latestAlbum = albumService.getLatestPopularAlbum();
-            model.addAttribute("latestAlbum", latestAlbum);
         } else {
 
         }
@@ -85,16 +82,16 @@ public class MainController {
 
     @RequestMapping(value = {"/post_id/{albumId}"})
     public String newPost(Model model, @PathVariable(value = "albumId") Long postId) throws UnsupportedEncodingException {
-        Optional<Album> maybeAlbum = albumService.findById(postId);
-        if (maybeAlbum.isPresent()) {
-            Album album = maybeAlbum.get();
-            Category category = categoryService.findById(album.getCategory());
-            List<Picture> pictures = albumService.findAllPicture(album.getId());
-            model.addAttribute("album", album);
+
+        initBaseModel(model);
+
+        Album maybeAlbum = albumService.findById(postId);
+        if (maybeAlbum != null) {
+            Category category = categoryService.findById(maybeAlbum.getCategory());
+            List<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId());
+            model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
             model.addAttribute("pictures", pictures);
-            List<Album> latestAlbum = albumService.getLatestPopularAlbum();
-            model.addAttribute("latestAlbum", latestAlbum);
         } else {
 
         }
@@ -103,6 +100,8 @@ public class MainController {
 
     @RequestMapping(value = {"search"})
     public String search(Model model, @RequestParam String key) {
+
+        initBaseModel(model);
 
         List<Album> resultAlbum = albumService.findAlbumByTitleBy(key);
         model.addAttribute("key", key);
@@ -116,5 +115,11 @@ public class MainController {
     public String addView(@RequestParam Long id) {
         albumService.addView(id);
         return "ok";
+    }
+
+    private void initBaseModel(Model model) {
+        model.addAttribute("categorys", categoryService.findAll());
+        List<Album> latestAlbum = albumService.getLatestPopularAlbum();
+        model.addAttribute("latestAlbum", latestAlbum);
     }
 }
