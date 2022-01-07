@@ -41,6 +41,7 @@ public class MainController {
 
     @RequestMapping(value = {"/page/{page}", "/"})
     public String index(Model model, @PathVariable(value = "page") Optional<Integer> maybePage) {
+        initBaseModel(model);
         PageUtil.PageResp<Album> albumPageResp =
                 albumService.pageFind(maybePage.orElse(1), defaultPageSize);
         model.addAttribute("albumPage", albumPageResp);
@@ -75,7 +76,7 @@ public class MainController {
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("pictures", pictures);
         } else {
-
+            return "error";
         }
         return "post";
     }
@@ -93,7 +94,7 @@ public class MainController {
             model.addAttribute("category", category);
             model.addAttribute("pictures", pictures);
         } else {
-
+            return "error";
         }
         return "post";
     }
@@ -121,5 +122,6 @@ public class MainController {
         model.addAttribute("categorys", categoryService.findAll());
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
+        model.addAttribute("adOn", isAdOn);
     }
 }

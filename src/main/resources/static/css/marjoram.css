@@ -2018,11 +2018,29 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .nav-previous {
-    padding-right: 1rem;
+    background-color: #ef9d87;
+    vertical-align: middle;
+    color: #fff;
+    border-radius: 2px;
+    padding: 8px 18px;
+    margin-left: 1rem;
 }
 
 .nav-next {
-    padding-left: 1rem;
+    background-color: #ef9d87;
+    vertical-align: middle;
+
+    border-radius: 2px;
+    padding: 8px 18px;
+    margin-right: 1rem;
+}
+
+.nav-previous a{
+    color: #fff;
+}
+
+.nav-next a{
+    color: #fff;
 }
 
 .single .nav-links a,
@@ -2043,13 +2061,14 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* blog pagination */
 .posts-navigation {
     padding: 12px 0;
+    width: 100%;
 }
 
 .blog .nav-previous a:before,
 .blog .nav-next a:after,
 .archive .nav-previous a:before,
 .archive .nav-next a:after {
-    content: "\f0a8";
+    content: "<";
     font-family: "Font Awesome 5 Free", FontAwesome;
     font-weight: 900;
     position: relative;
@@ -2058,7 +2077,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .blog .nav-next a:after,
 .archive .nav-next a:after {
-    content: "\f0a9";
+    content: ">";
     margin: 0 0 0 5px;
 }
 
@@ -2928,6 +2947,7 @@ object {
 
 .search-field {
     padding: 8px 65px 8px 15px;
+    height: 37px;
 }
 
 .search-submit {

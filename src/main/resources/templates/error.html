@@ -1,68 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="base :: htmlHead(pageTitle = ${album.getTitle()})">
+<head th:include="base :: htmlHead(pageTitle = 'NOT FOUND')">
 </head>
 <body class="post-template-default single single-post postid-53242 single-format-standard custom-background">
-<script>
-    $.get("/view?id=" + [[${album.getId()}]], function (result) {
-        console.log("view: " + result);
-    });
-</script>
-<div th:if="${adOn}">
-    <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
-</div>
+<script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 <div id="page" class="hfeed site full">
     <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
     <header th:include="base :: htmlTitle" id="masthead" class="site-header">
     </header>
     <div id="content" class="site-content container">
-        <div th:if="${adOn}">
-            <script type="application/javascript">
-                var ad_idzone = "4270810",
-                    ad_width = "300",
-                    ad_height = "250",
-                    v_pos = "bottom",
-                    h_pos = "left";
-            </script>
-            <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
-        </div>
+        <script type="application/javascript">
+            var ad_idzone = "4270810",
+                ad_width = "300",
+                ad_height = "250",
+                v_pos = "bottom",
+                h_pos = "left";
+        </script>
+        <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
         <div class="row">
             <div id="primary" class="content-area col-lg-8">
                 <main id="main" class="site-main single1">
                     <article id="post-53242"
                              class="post type-post status-publish format-standard has-post-thumbnail hentry category-magazine tag-miku-itou- tag-young-gangan- odd">
                         <header class="entry-header">
-                            <div class="title-meta-wrapper"><h1 class="entry-title" th:text="${album.getTitle()}"></h1>
+                            <div class="title-meta-wrapper"><h1 class="entry-title">NOT FOUND</h1>
                                 <ul class="entry-meta">
                                     <li class="byline"> By <span class="author vcard">
                                         <a class="url fn n"
                                            href="/">NongMo</a></span>
                                     </li>
-                                    <li class="cat-links">In <a href="/"
-                                                                rel="category tag">NongMo</a>, <a
-                                            th:href="|/category/${category.getName()}/|"
-                                            rel="category tag" th:text="${category.getName()}"></a></li>
-                                    <li class="posted-on"><span class="screen-reader-text">Posted on</span> <a
-                                            href="#"
-                                            rel="bookmark">
-                                        <time class="entry-date published" th:datetime="${album.getCreatedAt()}"
-                                              th:text="${album.getCreatedAt().toLocalDate()}">
-                                        </time>
-                                    </a></li>
                                 </ul>
                             </div>
                         </header>
                         <div class="entry-content">
-                            <p th:text="${album.getTitle()}"><span id="more-53242"></span></p>
-                            <div th:each="picture : ${pictures}" class="separator" style="clear: both;">
-                                <a th:href="${picture.getUrl()}"
-                                   style="display: block; padding: 1em 0; text-align: center; ">
-                                    <img class="lazyload" alt=""
-                                         data-original-height="1600"
-                                         data-original-width="1134"
-                                         th:src="${picture.getUrl()}">
-                                </a>
-                            </div>
+                            <p><span id="more-53242">
+                                NOT FOUND
+                            </span></p>
                         </div>
                     </article>
                 </main>
@@ -71,19 +44,17 @@
                 <aside id="right-sidebar" class="widget-area" style="position: sticky;">
                     <div id="custom_html-2" class="widget_text widget widget_custom_html">
                         <div class="textwidget custom-html-widget">
-                            <div th:if="${adOn}">
-                                <script type="application/javascript">
-                                    var ad_idzone = "4214752",
-                                        ad_width = "300",
-                                        ad_height = "250";
-                                </script>
-                                <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
-                                <noscript>
-                                    <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript"
-                                            width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
-                                            frameborder="0"></iframe>
-                                </noscript>
-                            </div>
+                            <script type="application/javascript">
+                                var ad_idzone = "4214752",
+                                    ad_width = "300",
+                                    ad_height = "250";
+                            </script>
+                            <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
+                            <noscript>
+                                <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript"
+                                        width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
+                                        frameborder="0"></iframe>
+                            </noscript>
                         </div>
                     </div>
                     <div id="search-2" class="widget widget_search">

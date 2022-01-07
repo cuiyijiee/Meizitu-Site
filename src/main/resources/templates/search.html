@@ -3,7 +3,9 @@
 <head th:include="base :: htmlHead(pageTitle = ${'Search Result for ' + key})">
 </head>
 <body class="home blog custom-background hfeed">
-<script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
+<div th:if="${adOn}">
+    <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
+</div>
 <div id="page" class="hfeed site full">
     <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
     <header th:include="base :: htmlTitle" id="masthead" class="site-header">
@@ -12,14 +14,16 @@
         <div class="row">
             <div id="primary" class="content-area col-lg-12">
                 <main id="main" class="site-main blog7">
-                    <script type="application/javascript">
-                        var ad_idzone = "4270810",
-                            ad_width = "300",
-                            ad_height = "250",
-                            v_pos = "bottom",
-                            h_pos = "left";
-                    </script>
-                    <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
+                    <div th:if="${adOn}">
+                        <script type="application/javascript">
+                            var ad_idzone = "4270810",
+                                ad_width = "300",
+                                ad_height = "250",
+                                v_pos = "bottom",
+                                h_pos = "left";
+                        </script>
+                        <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
+                    </div>
                     <header id="page-header">
                         <h1 class="page-title">Search Results for <span th:text="${key} + ' (' + ${searchResult.size()} + ')'"></span></h1>
                     </header>
