@@ -4,7 +4,7 @@
         var $mobile_nav = $('#main-nav-container').clone().prop({id: 'mobile-nav'});
         $mobile_nav.find('> ul').attr({'class': '', 'id': ''});
         $('body').append($mobile_nav);
-        $('#menu-wrapper .col-lg-12').prepend('<button type="button" id="mobile-nav-toggle"><i class="fa fas fa-bars"><svg t="1610977912281" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1933" width="32" height="32"><path d="M128 469.333333m40.533333 0l686.933334 0q40.533333 0 40.533333 40.533334l0 4.266666q0 40.533333-40.533333 40.533334l-686.933334 0q-40.533333 0-40.533333-40.533334l0-4.266666q0-40.533333 40.533333-40.533334Z" p-id="1934" fill="#ffffff"></path><path d="M128 682.666667m40.533333 0l686.933334 0q40.533333 0 40.533333 40.533333l0 4.266667q0 40.533333-40.533333 40.533333l-686.933334 0q-40.533333 0-40.533333-40.533333l0-4.266667q0-40.533333 40.533333-40.533333Z" p-id="1935" fill="#ffffff"></path><path d="M128 256m40.533333 0l686.933334 0q40.533333 0 40.533333 40.533333l0 4.266667q0 40.533333-40.533333 40.533333l-686.933334 0q-40.533333 0-40.533333-40.533333l0-4.266667q0-40.533333 40.533333-40.533333Z" p-id="1936" fill="#ffffff"></path></svg></i></button>');
+        $('#menu-wrapper .col-lg-12').prepend('<button type="button" id="mobile-nav-toggle"><i class="fa fas fa-bars"></i></button>');
         $('body').append('<div id="mobile-body-overly"></div>');
         $('#mobile-nav').find('.menu-item-has-children').prepend('<i class="fa fas fa-angle-down"></i>');
         $(document).on('click', '.menu-item-has-children i', function (e) {

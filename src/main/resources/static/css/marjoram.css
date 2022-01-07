@@ -2068,7 +2068,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 .blog .nav-next a:after,
 .archive .nav-previous a:before,
 .archive .nav-next a:after {
-    content: "<";
+    content: "\f0a8";
     font-family: "Font Awesome 5 Free", FontAwesome;
     font-weight: 900;
     position: relative;
@@ -2077,7 +2077,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .blog .nav-next a:after,
 .archive .nav-next a:after {
-    content: ">";
+    content: "\f0a9";
     margin: 0 0 0 5px;
 }
 
@@ -3430,9 +3430,9 @@ html {
     }
 }
 
-@media (min-width:1200px) {
+@media (min-width:1600px) {
     .container {
-        max-width: 1200px
+        max-width: 1600px
     }
 }
 
