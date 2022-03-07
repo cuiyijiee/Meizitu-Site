@@ -3424,9 +3424,9 @@ html {
     }
 }
 
-@media (min-width:992px) {
+@media (min-width:1160px) {
     .container {
-        max-width: 960px
+        max-width: 1160px
     }
 }
 

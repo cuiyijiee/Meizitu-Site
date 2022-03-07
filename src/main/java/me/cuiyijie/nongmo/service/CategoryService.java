@@ -20,11 +20,15 @@ public class CategoryService {
     CategoryDao categoryDao;
 
     public List<Category> findAll() {
-        return categoryDao.selectList(new QueryWrapper<>());
+        return categoryDao.selectList(new QueryWrapper<Category>()
+                .eq("enabled", true)
+                .orderByAsc("show_order"));
     }
 
     public Category findByName(String categoryName) {
-        return categoryDao.selectOne(new QueryWrapper<Category>().eq("name",categoryName));
+        return categoryDao.selectOne(new QueryWrapper<Category>()
+                .eq("name", categoryName)
+                .eq("enabled", true));
     }
 
     public Category findById(Long categoryId) {

@@ -6,7 +6,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L06WTLD73Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'G-L06WTLD73Y');
     </script>
@@ -35,27 +37,13 @@
             <div class="col-lg-12">
                 <nav id="main-nav-container" class="menu-menu-f-container">
                     <ul id="main-nav" class="nav-menu ">
-                        <li id="menu-item-1"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-24"><a
-                                href="/category/aidol/">Aidol</a></li>
-                        <li id="menu-item-2"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-26"><a
-                                href="/category/gravure/">Gravure</a></li>
-                        <li id="menu-item-3"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-27"><a
-                                href="/category/magazine/">Magazine</a></li>
-                        <li id="menu-item-4"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-29"><a
-                                href="/category/thailand/">Thailand</a></li>
-                        <li id="menu-item-5"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                                href="/category/chinese/">Chinese</a></li>
-                        <li id="menu-item-6"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                                href="/category/cosplay/">Cosplay</a></li>
-                        <li id="menu-item-7"
-                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                                href="/category/korea/">Korea</a></li>
+                        <li th:each="category : ${categorys}"
+                            th:id="|menu-item-${category.getId()}|"
+                            class="menu-item menu-item-type-taxonomy menu-item-object-category">
+                            <a th:href="|/category/${category.getName().toLowerCase()}/|"
+                               th:text="${category.getName().toUpperCase()}">
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -66,23 +54,16 @@
 <footer th:fragment="htmlFoot">
     <nav id="footer-nav">
         <ul id="footer-menu" class="menu">
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-24"><a
-                    href="/category/aidol/">Aidol</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-26"><a
-                    href="/category/gravure/">Gravure</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-menu-item menu-item-27">
-                <a href="/category/magazine/" aria-current="page">Magazine</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-29"><a
-                    href="/category/thailand/">Thailand</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                    href="/category/chinese/">Chinese</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                    href="/category/cosplay/">Cosplay</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25"><a
-                    href="/category/korea/">Korea</a></li>
+            <li th:each="category : ${categorys}"
+                th:id="|menu-item-${category.getId()}|"
+                class="menu-item menu-item-type-taxonomy menu-item-object-category">
+                <a th:href="|/category/${category.getName().toLowerCase()}/|"
+                   th:text="${category.getName().toUpperCase()}">
+                </a>
+            </li>
         </ul>
     </nav>
-    <p id="copyright">Copyright &copy;2021 . All rights reserved.</p>
+    <p id="copyright">Copyright &copy;2022 . All rights reserved.</p>
     <script type="text/javascript" src="/js/detectmobilebrowser.js"></script>
     <script type="text/javascript" id='mystickysidebar-js-extra'>
         var mystickyside_name = {

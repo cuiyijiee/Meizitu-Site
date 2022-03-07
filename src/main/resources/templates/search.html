@@ -28,7 +28,7 @@
                         <h1 class="page-title">Search Results for <span th:text="${key} + ' (' + ${searchResult.size()} + ')'"></span></h1>
                     </header>
                     <div class="row row-eq-height">
-                        <div class="col-lg-6" th:each="album : ${searchResult}">
+                        <div class="col-lg-4" th:each="album : ${searchResult}">
                             <article th:id="${album.getId()}"
                                      class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
                                 <div class="post-thumbnail">

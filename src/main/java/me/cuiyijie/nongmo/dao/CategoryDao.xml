@@ -17,6 +17,8 @@
         <if test="item.name != null and item.name != ''">
             AND name = #{item.name}
         </if>
+        AND enabled = 1
+        ORDER BY show_order ASC
     </select>
 
 </mapper>
