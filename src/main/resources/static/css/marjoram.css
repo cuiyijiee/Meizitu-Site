@@ -2017,6 +2017,15 @@ body.mobile-nav-active #mobile-nav-toggle {
     text-align: right;
 }
 
+.nav-center {
+    background-color: #ef9d87;
+    vertical-align: middle;
+    color: #fff;
+    border-radius: 2px;
+    padding: 8px 18px;
+    margin-left: 1rem;
+}
+
 .nav-previous {
     background-color: #ef9d87;
     vertical-align: middle;
@@ -4692,4 +4701,12 @@ html {
     .blog12 .entry-content {
         max-width: 65%;
     }
+}
+
+.page-item{
+
+}
+
+.page-item .active{
+    font-weight: bolder;
 }

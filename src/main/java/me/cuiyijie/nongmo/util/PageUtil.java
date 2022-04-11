@@ -73,12 +73,15 @@ public class PageUtil {
         }
 
         public boolean hasNext() {
-            return this.current <= Math.ceil(this.total / this.pageSize);
+            return this.current < Math.ceil(this.total / this.pageSize);
         }
 
         public Long getNext() {
             return this.current + 1;
         }
 
+        public Long getTotalPage(){
+            return new Double(Math.ceil(this.total / this.pageSize)).longValue();
+        }
     }
 }

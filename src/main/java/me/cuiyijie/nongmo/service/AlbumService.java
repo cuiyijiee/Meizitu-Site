@@ -1,6 +1,7 @@
 package me.cuiyijie.nongmo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
@@ -58,8 +59,12 @@ public class AlbumService {
         return albumDao.selectById(albumId);
     }
 
-    public List<Picture> findAllPicture(long albumId) {
-        return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId).orderByAsc("pic_index"));
+    public PageUtil.PageResp<Picture> findAllPicture(long albumId, Integer pageNum, Integer pageSize) {
+        Page<Picture> page = new Page<>(pageNum, pageSize);
+        pictureDao.selectPage(page, new QueryWrapper<Picture>()
+                .eq("album_id", albumId)
+                .orderByAsc("pic_index"));
+        return PageUtil.convertFromPage(page);
     }
 
     public List<Album> getLatestPopularAlbum() {

@@ -73,27 +73,33 @@ public class MainController {
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
-            List<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId());
+            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),1,9999);
             model.addAttribute("album", maybeAlbum);
-            model.addAttribute("pictures", pictures);
+            model.addAttribute("picturePage", pictures);
         } else {
             return "error";
         }
         return "post";
     }
 
-    @RequestMapping(value = {"/post_id/{albumId}"})
-    public String newPost(Model model, @PathVariable(value = "albumId") Long postId) throws UnsupportedEncodingException {
+    @RequestMapping(value = {"/post_id/{post_id}","/post_id/{post_id}/page/{page_num}"})
+    public String newPost(Model model,
+                          @PathVariable(value = "post_id") Long postId,
+                          @PathVariable(value = "page_num",required = false) Integer pageNum
+    ) {
 
         initBaseModel(model);
 
         Album maybeAlbum = albumService.findById(postId);
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
-            List<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId());
+            if(pageNum == null) {
+                pageNum = 1;
+            }
+            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),pageNum,2);
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
-            model.addAttribute("pictures", pictures);
+            model.addAttribute("picturePage", pictures);
         } else {
             return "error";
         }
