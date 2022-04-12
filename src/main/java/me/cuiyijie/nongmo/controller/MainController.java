@@ -34,6 +34,9 @@ public class MainController {
     @Value("${nongmo.ad-on:false}")
     private boolean isAdOn;
 
+    @Value("${nongmo.default.picture.pagesize:10}")
+    private Integer defaultPicturePageSize;
+
     @Autowired
     CategoryService categoryService;
 
@@ -96,7 +99,7 @@ public class MainController {
             if(pageNum == null) {
                 pageNum = 1;
             }
-            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),pageNum,2);
+            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),pageNum,defaultPicturePageSize);
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
             model.addAttribute("picturePage", pictures);
