@@ -12,7 +12,6 @@
     <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 </div>
 <div id="page" class="hfeed site full">
-    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
     <header th:include="base :: htmlTitle" id="masthead" class="site-header">
     </header>
     <div id="content" class="site-content container">
@@ -34,26 +33,23 @@
                         <header class="entry-header">
                             <div class="title-meta-wrapper"><h1 class="entry-title" th:text="${album.getTitle()}"></h1>
                                 <ul class="entry-meta">
-                                    <li class="byline"> By <span class="author vcard">
-                                        <a class="url fn n"
-                                           href="/">NongMo</a></span>
+                                    <li class="cat-links">
+                                        <a th:href="|/category/${category.getName()}/|"
+                                           rel="category tag" th:text="${category.getName()}">
+                                        </a>
                                     </li>
-                                    <li class="cat-links">In <a href="/"
-                                                                rel="category tag">NongMo</a>, <a
-                                            th:href="|/category/${category.getName()}/|"
-                                            rel="category tag" th:text="${category.getName()}"></a></li>
-                                    <li class="posted-on"><span class="screen-reader-text">Posted on</span> <a
-                                            href="#"
-                                            rel="bookmark">
-                                        <time class="entry-date published" th:datetime="${album.getCreatedAt()}"
-                                              th:text="${album.getCreatedAt().toLocalDate()}">
-                                        </time>
-                                    </a></li>
+                                    <li class="posted-on">
+                                        <span class="screen-reader-text">Posted on</span>
+                                        <a rel="bookmark">
+                                            <time class="entry-date published" th:datetime="${album.getCreatedAt()}"
+                                                  th:text="${album.getCreatedAt().toLocalDate()}">
+                                            </time>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </header>
                         <div class="entry-content">
-                            <p th:text="${album.getTitle()}"><span id="more-53242"></span></p>
                             <div th:each="picture : ${picturePage.data}" class="separator" style="clear: both;">
                                 <a th:href="${picture.getUrl()}"
                                    style="display: block; padding: 1em 0; text-align: center; ">
@@ -105,11 +101,6 @@
                                         ad_height = "250";
                                 </script>
                                 <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
-                                <noscript>
-                                    <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript"
-                                            width="300" height="250" scrolling="no" marginwidth="0" marginheight="0"
-                                            frameborder="0"></iframe>
-                                </noscript>
                             </div>
                         </div>
                     </div>
