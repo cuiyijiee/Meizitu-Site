@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -76,7 +75,7 @@ public class MainController {
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
-            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),1,9999);
+            PageUtil.PageResp<Picture> pictures = albumService.pageFindPicture(maybeAlbum.getId(),1,9999);
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("picturePage", pictures);
         } else {
@@ -99,10 +98,11 @@ public class MainController {
             if(pageNum == null) {
                 pageNum = 1;
             }
-            PageUtil.PageResp<Picture> pictures = albumService.findAllPicture(maybeAlbum.getId(),pageNum,defaultPicturePageSize);
+            //PageUtil.PageResp<Picture> pictures = albumService.pageFindPicture(maybeAlbum.getId(),pageNum,defaultPicturePageSize);
+            List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
-            model.addAttribute("picturePage", pictures);
+            model.addAttribute("picturePage", pictureList);
         } else {
             return "error";
         }
