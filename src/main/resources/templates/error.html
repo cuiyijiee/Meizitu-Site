@@ -11,16 +11,6 @@
     <header th:include="base :: htmlTitle" id="masthead" class="site-header">
     </header>
     <div id="content" class="site-content container">
-        <div th:if="${adOn}">
-            <script type="application/javascript">
-                var ad_idzone = "4270810",
-                    ad_width = "300",
-                    ad_height = "250",
-                    v_pos = "bottom",
-                    h_pos = "left";
-            </script>
-            <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
-        </div>
         <div class="row">
             <div id="primary" class="content-area col-lg-8">
                 <main id="main" class="site-main single1">
@@ -48,14 +38,7 @@
                 <aside id="right-sidebar" class="widget-area" style="position: sticky;">
                     <div id="custom_html-2" class="widget_text widget widget_custom_html">
                         <div class="textwidget custom-html-widget">
-                            <div th:if="${adOn}">
-                                <script type="application/javascript">
-                                    var ad_idzone = "4214752",
-                                        ad_width = "300",
-                                        ad_height = "250";
-                                </script>
-                                <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
-                            </div>
+
                         </div>
                     </div>
                     <div id="search-2" class="widget widget_search">

@@ -14,16 +14,6 @@
         <div class="row">
             <div id="primary" class="content-area col-lg-9">
                 <main id="main" class="site-main blog7">
-                    <div th:if="${adOn}">
-                        <script type="application/javascript">
-                            var ad_idzone = "4270810",
-                                ad_width = "300",
-                                ad_height = "250",
-                                v_pos = "bottom",
-                                h_pos = "left";
-                        </script>
-                        <script type="application/javascript" src="https://a.realsrv.com/js.php?t=17&idzone=4270810"></script>
-                    </div>
                     <header id="page-header" th:if="${category != null}">
                         <h1 class="page-title">Category: <span
                                 th:text="${category.substring(0, 1).toUpperCase() + category.substring(1)}"></span></h1>
@@ -91,17 +81,7 @@
                 <aside id="right-sidebar" class="widget-area">
                     <div id="custom_html-2" class="widget_text widget widget_custom_html">
                         <div class="textwidget custom-html-widget">
-                            <div th:if="${adOn}">
-                                <script type="application/javascript">
-                                    var ad_idzone = "4214752",
-                                        ad_width = "300",
-                                        ad_height = "250";
-                                </script>
-                                <script type="application/javascript" src="https://a.realsrv.com/ads.js"></script>
-                                <noscript>
-                                    <iframe src="https://syndication.realsrv.com/ads-iframe-display.php?idzone=4214752&output=noscript" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
-                                </noscript>
-                            </div>
+
                         </div>
                     </div>
                     <div id="search-2" class="widget widget_search">

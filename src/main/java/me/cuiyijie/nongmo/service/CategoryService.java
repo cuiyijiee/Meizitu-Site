@@ -1,6 +1,8 @@
 package me.cuiyijie.nongmo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.nongmo.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,14 @@ public class CategoryService {
 
     @Autowired
     CategoryDao categoryDao;
+
+    public IPage<Category> pageFind(Integer current, Integer pageSize, String query) {
+        Page<Category> page = new Page<>(current, pageSize);
+        return categoryDao.selectPage(page, new QueryWrapper<Category>()
+                .like("name", query)
+                .orderByDesc("show_order"));
+    }
+
 
     public List<Category> findAll() {
         return categoryDao.selectList(new QueryWrapper<Category>()
