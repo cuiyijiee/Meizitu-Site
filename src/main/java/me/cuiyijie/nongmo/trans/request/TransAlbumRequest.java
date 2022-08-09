@@ -1,7 +1,8 @@
-package me.cuiyijie.nongmo.trans;
+package me.cuiyijie.nongmo.trans.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.cuiyijie.nongmo.enums.AlbumOrderEnum;
 
 /**
  * @Author: yjcui3
@@ -11,6 +12,12 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TransAlbumRequest extends TransBasePageRequest {
 
+    private Integer id;
+
     private String query;
+
+    private AlbumOrderEnum orderBy;
+
+    private Integer category;
 
 }

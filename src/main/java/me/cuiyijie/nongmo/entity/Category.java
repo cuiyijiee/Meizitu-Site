@@ -2,7 +2,7 @@ package me.cuiyijie.nongmo.entity;
 
 import lombok.Data;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 /**
  * @author cyj976655@gmail.com
@@ -15,6 +15,6 @@ public class Category {
     private Long id;
     private String name;
     private Integer showOrder;
-    private OffsetDateTime createdAt;
+    private LocalDateTime createdAt;
 
 }

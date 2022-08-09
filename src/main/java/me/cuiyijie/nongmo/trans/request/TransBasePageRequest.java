@@ -1,4 +1,4 @@
-package me.cuiyijie.nongmo.trans;
+package me.cuiyijie.nongmo.trans.request;
 
 import lombok.Data;
 

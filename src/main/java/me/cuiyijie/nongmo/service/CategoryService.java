@@ -3,12 +3,18 @@ package me.cuiyijie.nongmo.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.cuiyijie.nongmo.dao.AlbumDao;
+import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
+import me.cuiyijie.nongmo.entity.vo.CategoryVO;
+import me.cuiyijie.nongmo.util.PageUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import me.cuiyijie.nongmo.dao.CategoryDao;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author cyj976655@gmail.com
@@ -21,11 +27,29 @@ public class CategoryService {
     @Autowired
     CategoryDao categoryDao;
 
-    public IPage<Category> pageFind(Integer current, Integer pageSize, String query) {
+    @Autowired
+    AlbumDao albumDao;
+
+    public PageUtil.PageResp<CategoryVO> pageFind(Integer current, Integer pageSize, String query) {
         Page<Category> page = new Page<>(current, pageSize);
-        return categoryDao.selectPage(page, new QueryWrapper<Category>()
+        categoryDao.selectPage(page, new QueryWrapper<Category>()
                 .like("name", query)
                 .orderByDesc("show_order"));
+
+        List<CategoryVO> categoryVOS = page.getRecords()
+                .stream()
+                .map(item -> {
+                    Integer count = albumDao.selectCount(new QueryWrapper<Album>().eq("category", item.getId()));
+                    CategoryVO categoryVO = new CategoryVO();
+                    BeanUtils.copyProperties(item, categoryVO);
+                    categoryVO.setAlbumCount(count);
+                    return categoryVO;
+                }).collect(Collectors.toList());
+
+        return new PageUtil.PageResp<CategoryVO>(page.getTotal(),
+                page.getCurrent(),
+                page.getSize(),
+                categoryVOS);
     }
 
 

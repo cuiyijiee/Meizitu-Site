@@ -7,12 +7,18 @@ import me.cuiyijie.nongmo.dao.PictureDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
+import me.cuiyijie.nongmo.entity.vo.AlbumDetailVO;
+import me.cuiyijie.nongmo.entity.vo.AlbumVO;
+import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
 import me.cuiyijie.nongmo.util.PageUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author cyj976655@gmail.com
@@ -32,6 +38,68 @@ public class AlbumService {
 
     private long lastObtainLatestTimestamp = 0;
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
+
+    public PageUtil.PageResp<AlbumVO> listAlbum(TransAlbumRequest transAlbumRequest) {
+        Page<Album> page = new Page<>(transAlbumRequest.getCurrent(), transAlbumRequest.getPageSize());
+
+        QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title", transAlbumRequest.getQuery());
+
+        if (transAlbumRequest.getCategory() != null) {
+            queryWrapper.eq("category", transAlbumRequest.getCategory());
+        }
+
+        if (transAlbumRequest.getOrderBy() != null) {
+            switch (transAlbumRequest.getOrderBy()) {
+                case viewNumAsc:
+                    queryWrapper.orderByAsc("view_num");
+                    break;
+                case viewNumDesc:
+                    queryWrapper.orderByDesc("view_num");
+                    break;
+                case createdAtAsc:
+                    queryWrapper.orderByAsc("created_at");
+                    break;
+                case createdAtDesc:
+                    queryWrapper.orderByDesc("created_at");
+                    break;
+            }
+        }
+        albumDao.selectPage(page, queryWrapper);
+
+        List<AlbumVO> albumVOS = page.getRecords().stream().map(item -> {
+            AlbumVO albumVO = new AlbumVO();
+            Integer count = pictureDao.selectCount(new QueryWrapper<Picture>()
+                    .eq("album_id", item.getId()));
+            BeanUtils.copyProperties(item, albumVO);
+            albumVO.setPictureCount(count);
+            return albumVO;
+        }).collect(Collectors.toList());
+
+        return new PageUtil.PageResp<>(page.getTotal(),
+                page.getCurrent(),
+                page.getSize(),
+                albumVOS);
+    }
+
+    public AlbumDetailVO getAlbumDetail(Integer id) {
+
+        AlbumDetailVO albumDetailVO = new AlbumDetailVO();
+        Album album = albumDao.selectById(id);
+        albumDetailVO.setAlbum(album);
+
+        if (null != album) {
+            Category category = categoryService.findById(album.getCategory());
+            albumDetailVO.setCategory(category);
+        }
+
+        List<Picture> pictureList = pictureDao.selectList(new QueryWrapper<Picture>()
+                .eq("album_id", id));
+        albumDetailVO.setPictureList(pictureList);
+
+        return albumDetailVO;
+    }
+
 
     public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
         Page<Album> page = new Page<>(pageNum, pageSize);
@@ -67,7 +135,7 @@ public class AlbumService {
     }
 
     public List<Picture> findAllPicture(long albumId) {
-        return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id",albumId));
+        return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
     }
 
     public List<Album> getLatestPopularAlbum() {

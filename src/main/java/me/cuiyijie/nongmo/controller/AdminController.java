@@ -1,19 +1,21 @@
 package me.cuiyijie.nongmo.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
+import me.cuiyijie.nongmo.entity.vo.AlbumDetailVO;
+import me.cuiyijie.nongmo.entity.vo.AlbumVO;
+import me.cuiyijie.nongmo.entity.vo.CategoryVO;
 import me.cuiyijie.nongmo.service.AlbumService;
 import me.cuiyijie.nongmo.service.CategoryService;
-import me.cuiyijie.nongmo.trans.TransAlbumRequest;
-import me.cuiyijie.nongmo.trans.TransBasePageRequest;
-import me.cuiyijie.nongmo.trans.TransCategoryRequest;
-import me.cuiyijie.nongmo.transfer.response.TransBaseResponse;
+import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
+import me.cuiyijie.nongmo.trans.request.TransCategoryRequest;
+import me.cuiyijie.nongmo.trans.response.TransBaseResponse;
+import me.cuiyijie.nongmo.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: cyj976655@gmail.com
@@ -26,15 +28,14 @@ public class AdminController {
     @Autowired
     private CategoryService categoryService;
 
-
     @Autowired
     private AlbumService albumService;
 
-    @RequestMapping(value = "listCategory", method = RequestMethod.POST)
+    @RequestMapping(value = "category/list", method = RequestMethod.POST)
     private TransBaseResponse listAllCategory(@RequestBody TransCategoryRequest transCategoryRequest) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
 
-        IPage<Category> categoryPage = categoryService.pageFind(transCategoryRequest.getCurrent(),
+        PageUtil.PageResp<CategoryVO> categoryPage = categoryService.pageFind(transCategoryRequest.getCurrent(),
                 transCategoryRequest.getPageSize(),
                 transCategoryRequest.getQuery());
 
@@ -45,9 +46,25 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "listAlbum", method = RequestMethod.POST)
+    @RequestMapping(value = "album/list", method = RequestMethod.POST)
     private TransBaseResponse listAlbum(@RequestBody TransAlbumRequest transAlbumRequest) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        PageUtil.PageResp<AlbumVO> albumPageResp = albumService.listAlbum(transAlbumRequest);
+        transBaseResponse.setObj(albumPageResp);
+        transBaseResponse.setCode("0");
+
+        return transBaseResponse;
+    }
+
+    @RequestMapping(value = "album/detail", method = RequestMethod.POST)
+    private TransBaseResponse getAlbumDetail(@RequestBody TransAlbumRequest transAlbumRequest) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        AlbumDetailVO albumDetailVO = albumService.getAlbumDetail(transAlbumRequest.getId());
+        transBaseResponse.setObj(albumDetailVO);
+        transBaseResponse.setCode("0");
+
         return transBaseResponse;
     }
 

@@ -1,4 +1,4 @@
-package me.cuiyijie.nongmo.transfer.response;
+package me.cuiyijie.nongmo.trans.response;
 
 import lombok.Data;
 import org.springframework.util.StringUtils;

@@ -11,7 +11,8 @@ import me.cuiyijie.nongmo.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class SitemapService {
             WebSitemapGenerator sitemap = new WebSitemapGenerator(BASE_URL);
 
             WebSitemapUrl indexWebSitemapUrl = new WebSitemapUrl.Options(BASE_URL)
-                    .lastMod(toDateString(OffsetDateTime.now()))
+                    .lastMod(toDateString(LocalDateTime.now()))
                     .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
             sitemap.addUrl(indexWebSitemapUrl);
             for (Category category : categoryService.findAll()) {
@@ -68,8 +69,9 @@ public class SitemapService {
         return "";
     }
 
-    private String toDateString(OffsetDateTime dateTime) {
+    private String toDateString(LocalDateTime dateTime) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return dateTime.format(fmt);
     }
+
 }
