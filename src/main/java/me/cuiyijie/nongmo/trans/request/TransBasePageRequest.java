@@ -3,7 +3,7 @@ package me.cuiyijie.nongmo.trans.request;
 import lombok.Data;
 
 /**
- * @Author: yjcui3
+ * @Author: cyj976655@gmail.com
  * @Date: 2022/7/29 10:46
  */
 @Data

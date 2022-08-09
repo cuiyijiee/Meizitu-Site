@@ -4,7 +4,7 @@ import lombok.Data;
 import me.cuiyijie.nongmo.entity.Album;
 
 /**
- * @Author: yjcui3
+ * @Author: cyj976655@gmail.com
  * @Date: 2022/8/9 16:00
  */
 @Data

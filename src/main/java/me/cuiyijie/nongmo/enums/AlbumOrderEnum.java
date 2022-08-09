@@ -1,7 +1,7 @@
 package me.cuiyijie.nongmo.enums;
 
 /**
- * @Author: yjcui3
+ * @Author: cyj976655@gmail.com
  * @Date: 2022/8/9 16:24
  */
 public enum AlbumOrderEnum {
