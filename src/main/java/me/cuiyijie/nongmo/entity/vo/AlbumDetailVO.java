@@ -8,7 +8,7 @@ import me.cuiyijie.nongmo.entity.Picture;
 import java.util.List;
 
 /**
- * @Author: yjcui3
+ * @Author: cyj976655@gmail.com
  * @Date: 2022/8/9 14:25
  */
 @Data

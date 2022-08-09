@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import me.cuiyijie.nongmo.enums.AlbumOrderEnum;
 
 /**
- * @Author: yjcui3
+ * @Author: cyj976655@gmail.com
  * @Date: 2022/7/29 14:50
  */
 @EqualsAndHashCode(callSuper = true)
