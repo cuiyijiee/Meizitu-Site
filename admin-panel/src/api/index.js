@@ -2,7 +2,7 @@ import service from "@/api/request";
 
 export function listCategory(current, pageSize, query) {
     return service({
-        url: "admin/category/list",
+        url: "/admin-api/category/list",
         method: "post",
         data: {
             current,
@@ -14,7 +14,7 @@ export function listCategory(current, pageSize, query) {
 
 export function listAlbum(current, pageSize, query, category, orderBy) {
     return service({
-        url: "admin/album/list",
+        url: "/admin-api/album/list",
         method: "post",
         data: {
             current,
@@ -28,7 +28,7 @@ export function listAlbum(current, pageSize, query, category, orderBy) {
 
 export function albumDetail(id) {
     return service({
-        url: "admin/album/detail",
+        url: "/admin-api/album/detail",
         method: "post",
         data: {
             id

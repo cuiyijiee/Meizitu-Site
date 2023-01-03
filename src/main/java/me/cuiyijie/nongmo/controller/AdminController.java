@@ -1,7 +1,5 @@
 package me.cuiyijie.nongmo.controller;
 
-import me.cuiyijie.nongmo.entity.Album;
-import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.vo.AlbumDetailVO;
 import me.cuiyijie.nongmo.entity.vo.AlbumVO;
 import me.cuiyijie.nongmo.entity.vo.CategoryVO;

@@ -39,7 +39,7 @@ public class CategoryService {
         List<CategoryVO> categoryVOS = page.getRecords()
                 .stream()
                 .map(item -> {
-                    Integer count = albumDao.selectCount(new QueryWrapper<Album>().eq("category", item.getId()));
+                    Long count = albumDao.selectCount(new QueryWrapper<Album>().eq("category", item.getId()));
                     CategoryVO categoryVO = new CategoryVO();
                     BeanUtils.copyProperties(item, categoryVO);
                     categoryVO.setAlbumCount(count);

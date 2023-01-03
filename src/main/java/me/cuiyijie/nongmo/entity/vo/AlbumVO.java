@@ -13,6 +13,6 @@ public class AlbumVO extends Album {
     /**
      * 图片数量
      */
-    private Integer pictureCount;
+    private Long pictureCount;
 
 }

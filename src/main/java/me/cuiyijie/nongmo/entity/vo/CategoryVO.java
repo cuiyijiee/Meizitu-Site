@@ -12,6 +12,6 @@ import me.cuiyijie.nongmo.entity.Category;
 @Data
 public class CategoryVO extends Category {
 
-    private Integer albumCount;
+    private Long albumCount;
 
 }

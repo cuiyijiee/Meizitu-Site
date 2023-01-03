@@ -1,6 +1,7 @@
 package me.cuiyijie.nongmo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
@@ -69,7 +70,7 @@ public class AlbumService {
 
         List<AlbumVO> albumVOS = page.getRecords().stream().map(item -> {
             AlbumVO albumVO = new AlbumVO();
-            Integer count = pictureDao.selectCount(new QueryWrapper<Picture>()
+            Long count = pictureDao.selectCount(new QueryWrapper<Picture>()
                     .eq("album_id", item.getId()));
             BeanUtils.copyProperties(item, albumVO);
             albumVO.setPictureCount(count);
@@ -103,7 +104,7 @@ public class AlbumService {
 
     public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.setDesc("created_at");
+        page.addOrder(new OrderItem("created_at",false));
         albumDao.selectPage(page, new QueryWrapper<>());
         return PageUtil.convertFromPage(page);
     }
@@ -111,7 +112,7 @@ public class AlbumService {
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
         Category category = categoryService.findByName(categoryName);
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.setDesc("created_at");
+        page.addOrder(new OrderItem("created_at",false));
         albumDao.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
         return PageUtil.convertFromPage(page);
     }
