@@ -75,9 +75,10 @@ public class MainController {
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
-            PageUtil.PageResp<Picture> pictures = albumService.pageFindPicture(maybeAlbum.getId(),1,9999);
+            //PageUtil.PageResp<Picture> pictures = albumService.pageFindPicture(maybeAlbum.getId(),1,9999);
+            List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
-            model.addAttribute("picturePage", pictures);
+            model.addAttribute("picturePage", pictureList);
         } else {
             return "error";
         }

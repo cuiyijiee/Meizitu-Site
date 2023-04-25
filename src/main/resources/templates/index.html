@@ -6,10 +6,9 @@
 <div th:if="${adOn}">
     <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 </div>
-<div id="page" class="hfeed site full">
-    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-    <header th:include="base :: htmlTitle" id="masthead" class="site-header">
-    </header>
+<header th:include="base :: htmlTitle" id="masthead" class="site-header">
+</header>
+<div id="page" class="hfeed site full better-scroll">
     <div id="content" class="site-content container">
         <div class="row">
             <div id="primary" class="content-area col-lg-9">
@@ -26,8 +25,8 @@
                                     <a th:href="|/post_id/${album.getId()}/|">
                                         <img width="400" height="600"
                                              class="wp-post-image"
-                                             action th:src="${album.getCoverUrl()}"
-                                             th:title="${album.getTitle()}"/>
+                                             th:src="${album.getCoverUrl()}"
+                                             th:title="${album.getTitle()}" alt="image cover"/>
                                     </a>
                                 </div>
                                 <div class="card-body">
@@ -106,12 +105,6 @@
                             <li th:each="album : ${latestAlbum}">
                                 <div class="post_thumb post_thumb_left">
                                     <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
-                                        <noscript>
-                                            <img fifu-featured="1" width="360" height="480"
-                                                 th:src="${album.getCoverUrl()}"
-                                                 class="attachment-360x480 size-360x480 wp-post-image"
-                                                 th:alt="${album.getTitle()}"/>
-                                        </noscript>
                                         <img width="360" height="480"
                                              th:src="${album.getCoverUrl()}"
                                              th:data-src="${album.getCoverUrl()}"
