@@ -3,6 +3,7 @@ package me.cuiyijie.nongmo.controller;
 import me.cuiyijie.nongmo.entity.vo.AlbumDetailVO;
 import me.cuiyijie.nongmo.entity.vo.AlbumVO;
 import me.cuiyijie.nongmo.entity.vo.CategoryVO;
+import me.cuiyijie.nongmo.service.AlbumAutoCheckService;
 import me.cuiyijie.nongmo.service.AlbumService;
 import me.cuiyijie.nongmo.service.CategoryService;
 import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
@@ -28,6 +29,9 @@ public class AdminController {
 
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private AlbumAutoCheckService albumAutoCheckService;
 
     @RequestMapping(value = "category/list", method = RequestMethod.POST)
     private TransBaseResponse listAllCategory(@RequestBody TransCategoryRequest transCategoryRequest) {
@@ -64,6 +68,12 @@ public class AdminController {
         transBaseResponse.setCode("0");
 
         return transBaseResponse;
+    }
+
+    @RequestMapping(value = "album/check", method = RequestMethod.POST)
+    private TransBaseResponse getJsoupTest() {
+        albumAutoCheckService.check();
+        return new TransBaseResponse();
     }
 
 }

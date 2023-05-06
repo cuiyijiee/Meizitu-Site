@@ -36,15 +36,17 @@ public class HttpAspect {
     public void doBefore(JoinPoint joinPoint) {
         ServletRequestAttributes attributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        //记录请求路径url,记录请求方式method,记录访问者ip,记录访问的类方法,记录传递的参数
-        logger.info("url={},method={},ip={},class_method={},args={}",
-                request.getRequestURL(),
-                request.getMethod(),
-                request.getRemoteAddr(),
-                joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName(),
-                joinPoint.getArgs()
-        );
+        if(attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            //记录请求路径url,记录请求方式method,记录访问者ip,记录访问的类方法,记录传递的参数
+            logger.info("url={},method={},ip={},class_method={},args={}",
+                    request.getRequestURL(),
+                    request.getMethod(),
+                    request.getRemoteAddr(),
+                    joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName(),
+                    joinPoint.getArgs()
+            );
+        }
     }
 
     @After("log()")

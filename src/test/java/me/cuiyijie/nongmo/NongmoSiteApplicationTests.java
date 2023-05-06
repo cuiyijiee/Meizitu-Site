@@ -3,6 +3,7 @@ package me.cuiyijie.nongmo;
 import me.cuiyijie.nongmo.dao.PictureDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Picture;
+import me.cuiyijie.nongmo.service.AlbumAutoCheckService;
 import me.cuiyijie.nongmo.service.AlbumService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,9 +25,13 @@ class NongmoSiteApplicationTests {
     @Autowired
     private PictureDao pictureDao;
 
+    @Autowired
+    private AlbumAutoCheckService albumAutoCheck;
+
     @Test
     void contextLoads() {
 
+        albumAutoCheck.check();
 
 
 //        try {
