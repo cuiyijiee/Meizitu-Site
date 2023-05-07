@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,9 @@ public class AlbumService {
         Page<Album> page = new Page<>(transAlbumRequest.getCurrent(), transAlbumRequest.getPageSize());
 
         QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("title", transAlbumRequest.getQuery());
+        if(StringUtils.hasText(transAlbumRequest.getQuery())){
+            queryWrapper.like("title", transAlbumRequest.getQuery());
+        }
 
         if (transAlbumRequest.getCategory() != null) {
             queryWrapper.eq("category", transAlbumRequest.getCategory());
@@ -159,6 +162,14 @@ public class AlbumService {
 
     public List<Album> findAlbumByTitleBy(String title) {
         return albumDao.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
+    }
+
+    public int disableAlbum(long albumId) {
+        Album album = new Album();
+        album.setId(albumId);
+        album.setEnabled(false);
+        album.setUpdatedAt(LocalDateTime.now());
+        return albumDao.updateById(album);
     }
 
     public int addView(Long id) {

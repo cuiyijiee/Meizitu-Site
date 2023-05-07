@@ -1,14 +1,25 @@
 package me.cuiyijie.nongmo.service;
 
-import java.net.URL;
-
+import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.nongmo.dao.TagDao;
+import me.cuiyijie.nongmo.entity.vo.AlbumVO;
+import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
+import me.cuiyijie.nongmo.util.PageUtil;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.net.*;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,18 +34,58 @@ public class AlbumAutoCheckService {
     @Value("${jsoup.proxy.port:7890}")
     private int proxyPort;
 
+    @Autowired
+    private AlbumService albumService;
 
-    public void check(){
-        try{
-            Document doc = Jsoup
-            .connect("https://everia.club/2023/05/06/reona-matsushita-%e6%9d%be%e4%b8%8b%e7%8e%b2%e7%b7%92%e8%8f%9c-flash%e3%83%87%e3%82%b8%e3%82%bf%e3%83%ab%e5%86%99%e7%9c%9f%e9%9b%86%e3%80%80%e3%80%8c%e7%b4%a0%e8%82%8c%e3%81%a7%e3%80%81%e6%97%85-3/")
-            .proxy(proxyIp, proxyPort)
-            .get();
-            log.info("解析到html:{}",doc.title());
-            Elements tagElements = doc.getElementsByClass("nv-tags-list");
-            log.info("解析到标签:{}", tagElements);
-        }catch(Exception exception) {
-            log.error("解析文件出现错误:", exception);
+    @Autowired
+    private TagService tagService;
+
+    public void check() {
+        int index = 0;
+        int pageSize = 10;
+        TransAlbumRequest transAlbumRequest = new TransAlbumRequest();
+        transAlbumRequest.setCurrent(index);
+        transAlbumRequest.setPageSize(pageSize);
+        PageUtil.PageResp<AlbumVO> albums = albumService.listAlbum(transAlbumRequest);
+        while (index <= albums.getTotalPage()) {
+            log.info("当前页数:{},总页数:{}", index, albums.getTotalPage());
+            for (AlbumVO albumVO : albums.getData()) {
+                //先请求head进行判断当前图片集是否已经失效
+                String originAlbumUrl = albumVO.getAlbumUrl();
+                String coverUrl = albumVO.getCoverUrl();
+                try {
+                    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyIp, proxyPort));
+                    HttpURLConnection coverConnection = proxySwitch ? (HttpURLConnection) new URL(coverUrl).openConnection(proxy) :
+                            (HttpURLConnection) new URL(coverUrl).openConnection();
+                    coverConnection.setRequestMethod("HEAD");
+                    boolean isOk = coverConnection.getResponseCode() == HttpStatus.OK.value();
+                    if (!isOk) {
+                        albumVO.setEnabled(false);
+                        albumService.disableAlbum(albumVO.getId());
+                    } else {
+                        Connection albumRequestConnection = Jsoup.connect(originAlbumUrl);
+                        //是否设置代理
+                        if (proxySwitch) {
+                            albumRequestConnection.proxy(proxyIp, proxyPort);
+                        }
+                        Document doc = albumRequestConnection.get();
+                        Elements tagElements = doc.selectXpath("//*[@class=\"nv-tags-list\"]/a");
+                        List<String> tags = tagElements.stream().map(Element::text).map(tag -> {
+                            if (tag.startsWith("[") && tag.endsWith("]")) {
+                                tag = tag.substring(1);
+                                tag = tag.substring(0, tag.length() - 1);
+                            }
+                            return tag;
+                        }).collect(Collectors.toList());
+                        log.info("解析到标签:{}", tags);
+                        tagService.autoSetTag(albumVO.getId(), tags);
+                    }
+                } catch (Exception exception) {
+                    log.error("解析图片集【" + albumVO.getId() + "】：出现出错误：", exception);
+                }
+            }
+            transAlbumRequest.setCurrent(index++);
+            albums = albumService.listAlbum(transAlbumRequest);
         }
     }
 }

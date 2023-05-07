@@ -31,8 +31,11 @@ class NongmoSiteApplicationTests {
     @Test
     void contextLoads() {
 
-        albumAutoCheck.check();
 
+        String tag = "[Yuzuki柚木]";
+        tag = tag.substring(1);
+        tag = tag.substring(0, tag.length() - 1);
+        System.out.println(tag);
 
 //        try {
 //

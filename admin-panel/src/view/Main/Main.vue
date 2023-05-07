@@ -3,13 +3,13 @@
         <el-aside width="200px">
             <el-scrollbar>
                 <el-menu router class="left_menu" @open="handleOpen" @close="handleClose">
-                    <el-menu-item index="home">
+                    <el-menu-item index="/">
                         <el-icon>
                             <Menu/>
                         </el-icon>
                         <span>菜单管理</span>
                     </el-menu-item>
-                    <el-menu-item index="about">
+                    <el-menu-item index="post">
                         <el-icon>
                             <document/>
                         </el-icon>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.nongmo.dao.TagDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.nongmo.entity.Tag">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="tag_name" property="tagName" jdbcType="INTEGER"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <result column="enabled" property="enabled" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT *
+        FROM tag
+        WHERE tag_name = #{tagName}
+    </select>
+
+    <select id="selectAlbumTags" resultMap="BaseResultMap">
+        SELECT *
+        FROM tag t
+                 LEFT JOIN tag_rel tr on t.id = tr.tag_id
+        WHERE tr.album_id = #{albumId}
+    </select>
+
+    <insert id="addAlbumTag" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO tag_rel (album_id, tag_id, created_at)
+        VALUES (#{albumId},
+                #{tagId}, NOW())
+    </insert>
+</mapper>

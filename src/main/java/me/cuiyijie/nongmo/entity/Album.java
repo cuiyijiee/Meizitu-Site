@@ -22,5 +22,6 @@ public class Album {
     @TableLogic
     private Boolean enabled;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

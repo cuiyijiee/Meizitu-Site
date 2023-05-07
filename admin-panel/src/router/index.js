@@ -12,9 +12,9 @@ const routes = [
     {
         path: "/", component: Main,
         children: [{
-            path: "home", component: CategoryManage
+            path: "", component: CategoryManage
         }, {
-            path: "about", component: PostManage
+            path: "post", component: PostManage
         }]
     },
     {
