@@ -147,7 +147,9 @@ public class MainController {
     private void initBaseModel(Model model) {
         model.addAttribute("categorys", categoryService.findAll());
         List<Album> latestAlbum = albumService.getLatestPopularAlbum();
+        List<Album> randomAlbum = albumService.getRandomAlbum();
         model.addAttribute("latestAlbum", latestAlbum);
+        model.addAttribute("randomAlbum", randomAlbum);
         model.addAttribute("adOn", isAdOn);
     }
 }

@@ -84,10 +84,28 @@
                             </button>
                         </form>
                     </div>
-                    <div id="wli_popular_posts-5" class="widget wli_popular_posts-class">
+                    <div id="wli_popular_posts" class="widget wli_popular_posts-class">
                         <h3 class="widget-title">Popular Posts</h3>
                         <ul>
                             <li th:each="album : ${latestAlbum}">
+                                <div class="post_thumb post_thumb_left">
+                                    <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
+                                        <img width="360" height="480"
+                                             th:src="${album.getCoverUrl()}"
+                                             th:data-src="${album.getCoverUrl()}"
+                                             class="lazyload attachment-360x480 size-360x480 wp-post-image"
+                                             th:alt="${album.getTitle()}"/> </a></div>
+                                <h3>
+                                    <a th:href="|/post_id/${album.getId()}/|"
+                                       th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
+                                </h3>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="wli_random_posts" class="widget wli_popular_posts-class">
+                        <h3 class="widget-title">Maybe You Like Posts</h3>
+                        <ul>
+                            <li th:each="album : ${randomAlbum}">
                                 <div class="post_thumb post_thumb_left">
                                     <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
                                         <img width="360" height="480"

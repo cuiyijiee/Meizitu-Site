@@ -23,4 +23,6 @@ public interface AlbumDao extends BaseMapper<Album> {
     Integer addViewNum(@Param("id") Long id);
 
     IPage<Album> pageFindByTag(IPage<Album> page, @Param("tagId") long tagId);
+
+    List<Album> findByRandom(@Param("limit") int limit);
 }

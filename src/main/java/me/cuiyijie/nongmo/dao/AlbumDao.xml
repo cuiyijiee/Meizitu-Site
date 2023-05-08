@@ -50,4 +50,11 @@
         ORDER BY a.created_at DESC
     </select>
 
+    <select id="findByRandom" resultMap="BaseResultMap">
+        SELECT *
+        FROM album
+        WHERE enabled = 1
+        ORDER BY RAND() LIMIT #{limit};
+    </select>
+
 </mapper>

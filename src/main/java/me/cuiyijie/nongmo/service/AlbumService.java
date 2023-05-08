@@ -150,6 +150,12 @@ public class AlbumService {
         return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
     }
 
+    public List<Album> getRandomAlbum() {
+        List<Album> result = albumDao.findByRandom(10);
+        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
+        return result;
+    }
+
     public List<Album> getLatestPopularAlbum() {
         long nowTimestamp = System.currentTimeMillis();
         if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
