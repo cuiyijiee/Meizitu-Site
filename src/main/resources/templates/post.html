@@ -21,22 +21,23 @@
                     <article id="post-53242"
                              class="post type-post status-publish format-standard has-post-thumbnail hentry category-magazine tag-miku-itou- tag-young-gangan- odd">
                         <header class="entry-header">
-                            <div class="title-meta-wrapper"><h1 class="entry-title" th:text="${album.getTitle()}"></h1>
-                                <ul class="entry-meta">
-                                    <li class="cat-links">
-                                        <a th:href="|/category/${category.getName()}/|"
-                                           rel="category tag" th:text="${category.getName()}">
-                                        </a>
-                                    </li>
-                                    <li class="posted-on">
-                                        <span class="screen-reader-text">Posted on</span>
-                                        <a rel="bookmark">
-                                            <time class="entry-date published" th:datetime="${album.getCreatedAt()}"
-                                                  th:text="${album.getCreatedAt().toLocalDate()}">
-                                            </time>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="title-meta-wrapper">
+                                <h1 class="entry-title" th:text="${album.getTitle()}"></h1>
+<!--                                <ul class="entry-meta">-->
+<!--                                    <li class="cat-links">-->
+<!--                                        <a th:href="|/category/${category.getName()}/|"-->
+<!--                                           rel="category tag" th:text="${category.getName()}">-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li class="posted-on">-->
+<!--                                        <span class="screen-reader-text">Posted on</span>-->
+<!--                                        <a rel="bookmark">-->
+<!--                                            <time class="entry-date published" th:datetime="${album.getCreatedAt()}"-->
+<!--                                                  th:text="${album.getCreatedAt().toLocalDate()}">-->
+<!--                                            </time>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
                             </div>
                         </header>
                         <div class="entry-content">
