@@ -67,6 +67,20 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping(value = {"/tag/{tag}/page/{page}/", "/tag/{tag}/"})
+    public String showTag(Model model,
+                          @PathVariable(value = "tag") String tagName,
+                          @PathVariable(value = "page") Optional<Integer> maybePage) {
+
+        initBaseModel(model);
+
+        PageUtil.PageResp<Album> albumPageResp =
+                albumService.pageFindByTag(maybePage.orElse(1), defaultPageSize, tagName);
+        model.addAttribute("albumPage", albumPageResp);
+        model.addAttribute("tag", tagName);
+        return "index";
+    }
+
     @RequestMapping(value = {"/post/{post}/"})
     public String post(Model model, @PathVariable(value = "post") String postName) throws UnsupportedEncodingException {
 
@@ -88,10 +102,10 @@ public class MainController {
         return "post";
     }
 
-    @RequestMapping(value = {"/post_id/{post_id}","/post_id/{post_id}/page/{page_num}"})
+    @RequestMapping(value = {"/post_id/{post_id}", "/post_id/{post_id}/page/{page_num}"})
     public String newPost(Model model,
                           @PathVariable(value = "post_id") Long postId,
-                          @PathVariable(value = "page_num",required = false) Integer pageNum
+                          @PathVariable(value = "page_num", required = false) Integer pageNum
     ) {
 
         initBaseModel(model);

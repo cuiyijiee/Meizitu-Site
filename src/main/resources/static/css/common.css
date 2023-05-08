@@ -1,0 +1,36 @@
+.nv-tags-list {
+    padding-bottom: 30px;
+    font-size: 20px;
+}
+
+.nv-tags-list span, .tagcloud span {
+    margin-right: 10px;
+}
+
+.nv-tags-list a, .tagcloud a {
+    margin: 0 10px 10px 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff !important;
+    padding: 10px;
+    border-radius: 4px;
+    background: #2f5aae;
+    line-height: 1;
+    font-size: .75em !important;
+    display: inline-block;
+    text-decoration: none;
+}
+
+body::-webkit-scrollbar {
+    width: 16px;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    -webkit-box-shadow: inset 0 0 8px #cfcfcf
+}
+
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px #cfcfcf;
+    border-radius: 8px
+}

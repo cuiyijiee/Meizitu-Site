@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="base :: htmlHead(pageTitle = ${album.getTitle()})">
 </head>
-<body class="post-template-default single single-post postid-53242 single-format-standard custom-background">
+<body class="post-template-default single single-post single-format-standard custom-background">
 <script>
     $.get("/view?id=" + [[${album.getId()}]], function (result) {
         console.log("view: " + result);
@@ -14,7 +14,7 @@
 <div id="page" class="hfeed site full">
     <header th:include="base :: htmlTitle" id="masthead" class="site-header">
     </header>
-    <div id="content" class="site-content container">
+    <div id="content" class="site-content container ">
         <div class="row">
             <div id="primary" class="content-area col-lg-9">
                 <main id="main" class="site-main single1">

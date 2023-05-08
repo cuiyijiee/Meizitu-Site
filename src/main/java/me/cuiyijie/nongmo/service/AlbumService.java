@@ -50,7 +50,7 @@ public class AlbumService {
         Page<Album> page = new Page<>(transAlbumRequest.getCurrent(), transAlbumRequest.getPageSize());
 
         QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.hasText(transAlbumRequest.getQuery())){
+        if (StringUtils.hasText(transAlbumRequest.getQuery())) {
             queryWrapper.like("title", transAlbumRequest.getQuery());
         }
 
@@ -78,17 +78,13 @@ public class AlbumService {
 
         List<AlbumVO> albumVOS = page.getRecords().stream().map(item -> {
             AlbumVO albumVO = new AlbumVO();
-            Long count = pictureDao.selectCount(new QueryWrapper<Picture>()
-                    .eq("album_id", item.getId()));
+            Long count = pictureDao.selectCount(new QueryWrapper<Picture>().eq("album_id", item.getId()));
             BeanUtils.copyProperties(item, albumVO);
             albumVO.setPictureCount(count);
             return albumVO;
         }).collect(Collectors.toList());
 
-        return new PageUtil.PageResp<>(page.getTotal(),
-                page.getCurrent(),
-                page.getSize(),
-                albumVOS);
+        return new PageUtil.PageResp<>(page.getTotal(), page.getCurrent(), page.getSize(), albumVOS);
     }
 
     public AlbumDetailVO getAlbumDetail(long albumId) {
@@ -102,8 +98,7 @@ public class AlbumService {
             albumDetailVO.setCategory(category);
         }
 
-        List<Picture> pictureList = pictureDao.selectList(new QueryWrapper<Picture>()
-                .eq("album_id", albumId));
+        List<Picture> pictureList = pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
         albumDetailVO.setPictureList(pictureList);
 
         List<Tag> tagList = tagDao.selectAlbumTags(albumId);
@@ -115,7 +110,7 @@ public class AlbumService {
 
     public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(new OrderItem("created_at",false));
+        page.addOrder(new OrderItem("created_at", false));
         albumDao.selectPage(page, new QueryWrapper<>());
         return PageUtil.convertFromPage(page);
     }
@@ -123,8 +118,15 @@ public class AlbumService {
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
         Category category = categoryService.findByName(categoryName);
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(new OrderItem("created_at",false));
+        page.addOrder(new OrderItem("created_at", false));
         albumDao.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
+        return PageUtil.convertFromPage(page);
+    }
+
+    public PageUtil.PageResp<Album> pageFindByTag(Integer pageNum, Integer pageSize, String tagName) {
+        Tag tag = tagDao.selectByName(tagName);
+        Page<Album> page = new Page<>(pageNum, pageSize);
+        albumDao.pageFindByTag(page, tag.getId());
         return PageUtil.convertFromPage(page);
     }
 
@@ -140,9 +142,7 @@ public class AlbumService {
 
     public PageUtil.PageResp<Picture> pageFindPicture(long albumId, Integer pageNum, Integer pageSize) {
         Page<Picture> page = new Page<>(pageNum, pageSize);
-        pictureDao.selectPage(page, new QueryWrapper<Picture>()
-                .eq("album_id", albumId)
-                .orderByAsc("pic_index"));
+        pictureDao.selectPage(page, new QueryWrapper<Picture>().eq("album_id", albumId).orderByAsc("pic_index"));
         return PageUtil.convertFromPage(page);
     }
 

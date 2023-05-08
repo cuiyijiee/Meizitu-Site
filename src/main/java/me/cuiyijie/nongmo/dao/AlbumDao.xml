@@ -41,4 +41,13 @@
         WHERE id = #{id}
     </update>
 
+    <select id="pageFindByTag" resultMap="BaseResultMap">
+        SELECT *
+        FROM album a
+                 LEFT JOIN tag_rel tr
+                           ON a.id = tr.album_id
+        WHERE tr.tag_id = #{tagId}
+        ORDER BY a.created_at DESC
+    </select>
+
 </mapper>
