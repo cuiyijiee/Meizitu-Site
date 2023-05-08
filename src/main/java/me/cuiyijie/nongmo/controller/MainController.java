@@ -1,8 +1,10 @@
 package me.cuiyijie.nongmo.controller;
 
+import me.cuiyijie.nongmo.dao.TagDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
+import me.cuiyijie.nongmo.entity.Tag;
 import me.cuiyijie.nongmo.service.AlbumService;
 import me.cuiyijie.nongmo.service.CategoryService;
 import me.cuiyijie.nongmo.util.PageUtil;
@@ -33,11 +35,11 @@ public class MainController {
     @Value("${nongmo.ad-on:false}")
     private boolean isAdOn;
 
-    @Value("${nongmo.default.picture.pagesize:10}")
-    private Integer defaultPicturePageSize;
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
-    CategoryService categoryService;
+    private TagDao tagDao;
 
     @Autowired
     AlbumService albumService;
@@ -76,8 +78,10 @@ public class MainController {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
             List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
+            List<Tag> tagList = tagDao.selectAlbumTags(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
-            model.addAttribute("picturePage", pictureList);
+            model.addAttribute("pictureList", pictureList);
+            model.addAttribute("tagList", tagList);
         } else {
             return "error";
         }
@@ -95,13 +99,12 @@ public class MainController {
         Album maybeAlbum = albumService.findById(postId);
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
-            if(pageNum == null) {
-                pageNum = 1;
-            }
             List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
+            List<Tag> tagList = tagDao.selectAlbumTags(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
-            model.addAttribute("picturePage", pictureList);
+            model.addAttribute("pictureList", pictureList);
+            model.addAttribute("tagList", tagList);
         } else {
             return "error";
         }

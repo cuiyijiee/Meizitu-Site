@@ -1,13 +1,11 @@
 package me.cuiyijie.nongmo.service;
 
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.nongmo.dao.TagDao;
 import me.cuiyijie.nongmo.entity.vo.AlbumVO;
 import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
 import me.cuiyijie.nongmo.util.PageUtil;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.*;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -60,8 +57,8 @@ public class AlbumAutoCheckService {
                     coverConnection.setRequestMethod("HEAD");
                     boolean isOk = coverConnection.getResponseCode() == HttpStatus.OK.value();
                     if (!isOk) {
-                        albumVO.setEnabled(false);
                         albumService.disableAlbum(albumVO.getId());
+                        log.info("解析到图片集【{}】失效",albumVO.getId());
                     } else {
                         Connection albumRequestConnection = Jsoup.connect(originAlbumUrl);
                         //是否设置代理

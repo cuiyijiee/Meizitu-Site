@@ -30,10 +30,8 @@ public class TagService {
                 }
 
                 tagDao.addAlbumTag(albumId, tag.getId());
-
             }
         }
-
     }
 
 }

@@ -12,7 +12,7 @@ import me.cuiyijie.nongmo.enums.AlbumOrderEnum;
 @Data
 public class TransAlbumRequest extends TransBasePageRequest {
 
-    private Integer id;
+    private long id;
 
     private String query;
 

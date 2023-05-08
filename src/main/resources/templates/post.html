@@ -40,14 +40,21 @@
                             </div>
                         </header>
                         <div class="entry-content">
-<!--                            <div th:each="picture : ${picturePage.data}" class="separator" style="clear: both;">-->
-                            <div th:each="picture : ${picturePage}" class="separator" style="clear: both;">
+                            <div th:each="picture : ${pictureList}" class="separator" style="clear: both;">
                                 <a th:href="${picture.getUrl()}"
                                    style="display: block; padding: 1em 0; text-align: center; ">
                                     <img class="lazyload" alt=""
                                          data-original-height="1600"
                                          data-original-width="1134"
                                          th:src="${picture.getUrl()}">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="entry-footer">
+                            <div class="nv-tags-list">
+                                <span>Tags:</span>
+                                <a th:each="tag : ${tagList}" th:href="|/tag/${tag.getTagName()}/|"
+                                   th:title="${tag.getTagName()}" th:class="${tag.getTagName()}" th:text="${tag.getTagName()}" rel="tag">
                                 </a>
                             </div>
                         </div>

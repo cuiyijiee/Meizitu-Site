@@ -4,6 +4,7 @@ import lombok.Data;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
+import me.cuiyijie.nongmo.entity.Tag;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public class AlbumDetailVO {
     private Category category;
 
     private List<Picture> pictureList;
+
+    private List<Tag> tagList;
 
 }

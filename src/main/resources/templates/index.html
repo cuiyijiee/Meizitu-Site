@@ -18,7 +18,7 @@
                                 th:text="${category.substring(0, 1).toUpperCase() + category.substring(1)}"></span></h1>
                     </header>
                     <div class="row row-eq-height">
-                        <div class="col-lg-4" th:each="album : ${albumPage.data}">
+                        <div class="col-lg-4" th:each="album : ${albumPage.getData()}">
                             <article th:id="${album.getId()}"
                                      class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
                                 <div class="post-thumbnail">
@@ -55,20 +55,21 @@
                         <nav class="navigation posts-navigation" role="navigation" aria-label="Posts">
                             <h2 class="screen-reader-text">Posts navigation</h2>
                             <div class="nav-links">
-                                <div th:if="${category == null}">
-                                    <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
-                                            th:href="|/page/${albumPage.getPre()}/|">Pre page</a>
-                                    </div>
-                                    <div class="nav-next" th:if="${albumPage.hasNext()}"><a
-                                            th:href="|/page/${albumPage.getNext()}/|">Next page</a>
-                                    </div>
-                                </div>
                                 <div th:if="${category != null}">
                                     <div class="nav-next" th:if="${albumPage.hasNext()}"><a
                                             th:href="|/category/${category}/page/${albumPage.getNext()}/|">Next page</a>
                                     </div>
                                     <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
                                             th:href="|/category/${category}/page/${albumPage.getPre()}/|">Pre page</a>
+                                    </div>
+                                </div>
+                                <div th:></div>
+                                <div th:if="${category == null}">
+                                    <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
+                                            th:href="|/page/${albumPage.getPre()}/|">Pre page</a>
+                                    </div>
+                                    <div class="nav-next" th:if="${albumPage.hasNext()}"><a
+                                            th:href="|/page/${albumPage.getNext()}/|">Next page</a>
                                     </div>
                                 </div>
                             </div>

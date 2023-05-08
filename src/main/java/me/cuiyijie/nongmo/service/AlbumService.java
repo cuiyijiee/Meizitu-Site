@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
+import me.cuiyijie.nongmo.dao.TagDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
+import me.cuiyijie.nongmo.entity.Tag;
 import me.cuiyijie.nongmo.entity.vo.AlbumDetailVO;
 import me.cuiyijie.nongmo.entity.vo.AlbumVO;
 import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
@@ -37,6 +39,9 @@ public class AlbumService {
 
     @Autowired
     PictureDao pictureDao;
+
+    @Autowired
+    TagDao tagDao;
 
     private long lastObtainLatestTimestamp = 0;
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
@@ -86,10 +91,10 @@ public class AlbumService {
                 albumVOS);
     }
 
-    public AlbumDetailVO getAlbumDetail(Integer id) {
+    public AlbumDetailVO getAlbumDetail(long albumId) {
 
         AlbumDetailVO albumDetailVO = new AlbumDetailVO();
-        Album album = albumDao.selectById(id);
+        Album album = albumDao.selectById(albumId);
         albumDetailVO.setAlbum(album);
 
         if (null != album) {
@@ -98,8 +103,11 @@ public class AlbumService {
         }
 
         List<Picture> pictureList = pictureDao.selectList(new QueryWrapper<Picture>()
-                .eq("album_id", id));
+                .eq("album_id", albumId));
         albumDetailVO.setPictureList(pictureList);
+
+        List<Tag> tagList = tagDao.selectAlbumTags(albumId);
+        albumDetailVO.setTagList(tagList);
 
         return albumDetailVO;
     }
