@@ -67,7 +67,7 @@ import {onMounted, reactive, toRefs, ref, nextTick} from "vue";
 import {listAlbum, listCategory, uploadFile} from "@/api";
 
 
-import AlbumEdit from "@/components/AlbumEdit";
+import AlbumEdit from "@/components/AlbumEdit.vue";
 import AlbumAdd from "@/components/AlbumAdd.vue";
 
 import MyLoading from "@/utils/MyLoading";

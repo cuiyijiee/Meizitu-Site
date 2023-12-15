@@ -3,6 +3,7 @@ package me.cuiyijie.nongmo.entity;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  * @date 2021/1/10 19:47
  */
 @Data
-public class Album {
+public class Album implements Serializable {
 
     private Long id;
     private String originId;

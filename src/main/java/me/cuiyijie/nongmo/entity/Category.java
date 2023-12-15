@@ -2,6 +2,7 @@ package me.cuiyijie.nongmo.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  */
 
 @Data
-public class Category {
+public class Category implements Serializable {
 
     private Long id;
     private String name;

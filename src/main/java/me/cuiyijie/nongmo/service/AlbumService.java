@@ -16,6 +16,7 @@ import me.cuiyijie.nongmo.trans.request.TransAlbumRequest;
 import me.cuiyijie.nongmo.util.PageUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,16 +33,19 @@ import java.util.stream.Collectors;
 public class AlbumService {
 
     @Autowired
-    AlbumDao albumDao;
+    private AlbumDao albumDao;
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    PictureDao pictureDao;
+    private PictureDao pictureDao;
 
     @Autowired
-    TagDao tagDao;
+    private TagDao tagDao;
+
+    @Autowired
+    private SearchRecordService searchRecordService;
 
     private long lastObtainLatestTimestamp = 0;
     private List<Album> latestPopularTenAlbum = new ArrayList<>();
@@ -140,12 +144,7 @@ public class AlbumService {
         return albumDao.selectById(albumId);
     }
 
-    public PageUtil.PageResp<Picture> pageFindPicture(long albumId, Integer pageNum, Integer pageSize) {
-        Page<Picture> page = new Page<>(pageNum, pageSize);
-        pictureDao.selectPage(page, new QueryWrapper<Picture>().eq("album_id", albumId).orderByAsc("pic_index"));
-        return PageUtil.convertFromPage(page);
-    }
-
+    @Cacheable(value = "all_picture")
     public List<Picture> findAllPicture(long albumId) {
         return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
     }
@@ -174,7 +173,8 @@ public class AlbumService {
         return result;
     }
 
-    public List<Album> findAlbumByTitleBy(String title) {
+    public List<Album> findAlbumByTitleBy(String title, String ip) {
+        searchRecordService.insertNewSearchRecord(title, ip);
         return albumDao.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
     }
 

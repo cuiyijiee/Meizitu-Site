@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.nongmo.dao.FileUploadDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.nongmo.entity.FileUpload">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="origin_file_name" property="originFileName" jdbcType="VARCHAR"/>
+        <result column="file_md5" property="fileMd5" jdbcType="VARCHAR"/>
+        <result column="object_name" property="objectName" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectByMd5" resultMap="BaseResultMap">
+        SELECT *
+        FROM file_upload
+        WHERE file_md5 = #{fileMd5}
+    </select>
+
+
+</mapper>

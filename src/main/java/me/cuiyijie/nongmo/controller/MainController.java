@@ -7,6 +7,7 @@ import me.cuiyijie.nongmo.entity.Picture;
 import me.cuiyijie.nongmo.entity.Tag;
 import me.cuiyijie.nongmo.service.AlbumService;
 import me.cuiyijie.nongmo.service.CategoryService;
+import me.cuiyijie.nongmo.util.IpUtil;
 import me.cuiyijie.nongmo.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -126,11 +128,11 @@ public class MainController {
     }
 
     @RequestMapping(value = {"search"})
-    public String search(Model model, @RequestParam String key) {
+    public String search(Model model, @RequestParam String key, HttpServletRequest servletRequest) {
 
         initBaseModel(model);
 
-        List<Album> resultAlbum = albumService.findAlbumByTitleBy(key);
+        List<Album> resultAlbum = albumService.findAlbumByTitleBy(key, IpUtil.getIpAddr(servletRequest));
         model.addAttribute("key", key);
         model.addAttribute("searchResult", resultAlbum);
 
