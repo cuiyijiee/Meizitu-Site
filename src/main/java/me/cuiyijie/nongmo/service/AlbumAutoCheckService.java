@@ -66,7 +66,7 @@ public class AlbumAutoCheckService {
                             albumRequestConnection.proxy(proxyIp, proxyPort);
                         }
                         Document doc = albumRequestConnection.get();
-                        Elements tagElements = doc.selectXpath("//*[@class=\"nv-tags-list\"]/a");
+                        Elements tagElements = doc.selectXpath("//*[@class=\"post-tags clr\"]/a");
                         List<String> tags = tagElements.stream().map(Element::text).map(tag -> {
                             if (tag.startsWith("[") && tag.endsWith("]")) {
                                 tag = tag.substring(1);
