@@ -71,8 +71,6 @@ import {reactive, toRefs} from "vue";
 import {genFileId} from 'element-plus'
 import {uploadFile} from "@/api";
 
-import {UploadRawFile} from 'element-plus'
-
 import BMF from 'browser-md5-file';
 
 export default {

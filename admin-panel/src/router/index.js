@@ -1,11 +1,11 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 
 
-import Login from "@/view/Login";
+import Login from "@/views/Login.vue";
 
-import Main from "@/view/Main/Main";
-import CategoryManage from "@/view/Main/CategoryManage";
-import PostManage from "@/view/Main/PostManage";
+import Main from "@/views/Main/Main.vue";
+import CategoryManage from "@/views/Main/CategoryManage.vue";
+import PostManage from "@/views/Main/PostManage.vue";
 
 
 const routes = [
