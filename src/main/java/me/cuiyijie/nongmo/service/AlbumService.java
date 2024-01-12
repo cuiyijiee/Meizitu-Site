@@ -114,7 +114,7 @@ public class AlbumService {
 
     public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(new OrderItem("created_at", false));
+        page.addOrder(OrderItem.desc("created_at"));
         albumDao.selectPage(page, new QueryWrapper<>());
         return PageUtil.convertFromPage(page);
     }
@@ -122,7 +122,7 @@ public class AlbumService {
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
         Category category = categoryService.findByName(categoryName);
         Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(new OrderItem("created_at", false));
+        page.addOrder(OrderItem.desc("created_at"));
         albumDao.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
         return PageUtil.convertFromPage(page);
     }

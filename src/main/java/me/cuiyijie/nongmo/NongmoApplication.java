@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @MapperScan("me.cuiyijie.nongmo.dao")
 @SpringBootApplication
-@EnableScheduling
 @EnableCaching
 public class NongmoApplication {
 

@@ -1,26 +1,3 @@
-.nv-tags-list {
-    padding-bottom: 30px;
-    font-size: 20px;
-}
-
-.nv-tags-list span, .tagcloud span {
-    margin-right: 10px;
-}
-
-.nv-tags-list a, .tagcloud a {
-    margin: 0 10px 10px 0;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #fff !important;
-    padding: 10px;
-    border-radius: 4px;
-    background: #2f5aae;
-    line-height: 1;
-    font-size: .75em !important;
-    display: inline-block;
-    text-decoration: none;
-}
-
 body::-webkit-scrollbar {
     width: 16px;
 }
@@ -33,4 +10,44 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 5px #cfcfcf;
     border-radius: 8px
+}
+
+
+.page-header {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -20px;
+    margin-left: -20px
+}
+
+.row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.hentry {
+    line-height: 1.8;
+    margin: 0 0 2rem;
+}
+
+.hentry:last-child {
+    margin-bottom: 0;
+}
+
+.post-thumbnail {
+    margin-bottom: 1.875rem;
+    position: relative;
+}
+
+.wp-post-image {
+    display: block;
 }
