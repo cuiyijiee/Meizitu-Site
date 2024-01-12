@@ -1,6 +1,8 @@
 package me.cuiyijie.nongmo.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -11,12 +13,14 @@ import java.util.List;
 public class PageUtil {
 
     public static <T> PageResp<T> convertFromPage(IPage<T> page) {
-        return new PageResp<T>(page.getTotal(),
+        return new PageResp<>(page.getTotal(),
                 page.getCurrent(),
                 page.getSize(),
                 page.getRecords());
     }
 
+    @Setter
+    @Getter
     public static class PageResp<T> {
 
         public Long total;
@@ -29,38 +33,6 @@ public class PageUtil {
             this.total = total;
             this.current = current;
             this.pageSize = pageSize;
-            this.data = data;
-        }
-
-        public Long getTotal() {
-            return total;
-        }
-
-        public void setTotal(Long total) {
-            this.total = total;
-        }
-
-        public Long getCurrent() {
-            return current;
-        }
-
-        public void setCurrent(Long current) {
-            this.current = current;
-        }
-
-        public Long getPageSize() {
-            return pageSize;
-        }
-
-        public void setPageSize(Long pageSize) {
-            this.pageSize = pageSize;
-        }
-
-        public List<T> getData() {
-            return data;
-        }
-
-        public void setData(List<T> data) {
             this.data = data;
         }
 

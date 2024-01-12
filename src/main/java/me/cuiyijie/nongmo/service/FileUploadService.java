@@ -34,7 +34,7 @@ public class FileUploadService extends ServiceImpl<FileUploadDao, FileUpload> {
         try {
             return uploadFile(fileMd5, multipartFile.getOriginalFilename(), multipartFile.getInputStream());
         } catch (Exception exception) {
-
+            log.error("上传文件异常：", exception);
         }
         return null;
     }
