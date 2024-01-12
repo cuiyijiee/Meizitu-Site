@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author cyj976655@gmail.com
  * @date 2021/1/24 22:17
  */
+@Slf4j
 @Service
 public class SitemapService {
 
@@ -63,7 +65,7 @@ public class SitemapService {
             }
             return String.join("", sitemap.writeAsStrings());
         } catch (Exception exception) {
-            exception.printStackTrace();
+            log.error("生成sitemap异常：", exception);
         }
         return "";
     }

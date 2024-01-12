@@ -3,6 +3,7 @@ package me.cuiyijie.nongmo.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.cuiyijie.nongmo.dao.AlbumDao;
 import me.cuiyijie.nongmo.dao.PictureDao;
 import me.cuiyijie.nongmo.dao.TagDao;
@@ -30,10 +31,7 @@ import java.util.stream.Collectors;
  * @date 2021/1/10 21:39
  */
 @Service
-public class AlbumService {
-
-    @Autowired
-    private AlbumDao albumDao;
+public class AlbumService extends ServiceImpl<AlbumDao, Album> {
 
     @Autowired
     private CategoryService categoryService;
@@ -78,7 +76,7 @@ public class AlbumService {
                     break;
             }
         }
-        albumDao.selectPage(page, queryWrapper);
+        baseMapper.selectPage(page, queryWrapper);
 
         List<AlbumVO> albumVOS = page.getRecords().stream().map(item -> {
             AlbumVO albumVO = new AlbumVO();
@@ -94,7 +92,7 @@ public class AlbumService {
     public AlbumDetailVO getAlbumDetail(long albumId) {
 
         AlbumDetailVO albumDetailVO = new AlbumDetailVO();
-        Album album = albumDao.selectById(albumId);
+        Album album = baseMapper.selectById(albumId);
         albumDetailVO.setAlbum(album);
 
         if (null != album) {
@@ -115,7 +113,7 @@ public class AlbumService {
     public PageUtil.PageResp<Album> pageFind(Integer pageNum, Integer pageSize) {
         Page<Album> page = new Page<>(pageNum, pageSize);
         page.addOrder(OrderItem.desc("created_at"));
-        albumDao.selectPage(page, new QueryWrapper<>());
+        baseMapper.selectPage(page, new QueryWrapper<>());
         return PageUtil.convertFromPage(page);
     }
 
@@ -123,25 +121,25 @@ public class AlbumService {
         Category category = categoryService.findByName(categoryName);
         Page<Album> page = new Page<>(pageNum, pageSize);
         page.addOrder(OrderItem.desc("created_at"));
-        albumDao.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
+        baseMapper.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
         return PageUtil.convertFromPage(page);
     }
 
     public PageUtil.PageResp<Album> pageFindByTag(Integer pageNum, Integer pageSize, String tagName) {
         Tag tag = tagDao.selectByName(tagName);
         Page<Album> page = new Page<>(pageNum, pageSize);
-        albumDao.pageFindByTag(page, tag.getId());
+        baseMapper.pageFindByTag(page, tag.getId());
         return PageUtil.convertFromPage(page);
     }
 
     public Album findByName(String name) {
         Album album = new Album();
         album.setTitle(name);
-        return albumDao.selectOne(new QueryWrapper<Album>().eq("title", name));
+        return baseMapper.selectOne(new QueryWrapper<Album>().eq("title", name));
     }
 
     public Album findById(long albumId) {
-        return albumDao.selectById(albumId);
+        return baseMapper.selectById(albumId);
     }
 
     @Cacheable(value = "all_picture")
@@ -150,20 +148,20 @@ public class AlbumService {
     }
 
     public List<Album> getRandomAlbum() {
-        List<Album> result = albumDao.findByRandom(10);
+        List<Album> result = baseMapper.findByRandom(10);
         result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
         return result;
     }
 
     public List<Album> getLatestPopularAlbum() {
         long nowTimestamp = System.currentTimeMillis();
-        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.size() == 0) {
+        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.isEmpty()) {
             lastObtainLatestTimestamp = nowTimestamp;
             Page<Album> page = new Page<>(1, 100);
-            latestPopularTenAlbum = albumDao.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();
+            latestPopularTenAlbum = baseMapper.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();
         }
         List<Album> result = new ArrayList<>();
-        if (latestPopularTenAlbum.size() > 0) {
+        if (!latestPopularTenAlbum.isEmpty()) {
             for (int index = 0; index < 10; index++) {
                 int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
                 result.add(latestPopularTenAlbum.get(randomAlbumIndex));
@@ -175,7 +173,7 @@ public class AlbumService {
 
     public List<Album> findAlbumByTitleBy(String title, String ip) {
         searchRecordService.insertNewSearchRecord(title, ip);
-        return albumDao.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
+        return baseMapper.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
     }
 
     public int disableAlbum(long albumId) {
@@ -183,10 +181,10 @@ public class AlbumService {
         album.setId(albumId);
         album.setEnabled(false);
         album.setUpdatedAt(LocalDateTime.now());
-        return albumDao.updateById(album);
+        return baseMapper.updateById(album);
     }
 
     public int addView(Long id) {
-        return albumDao.addViewNum(id);
+        return baseMapper.addViewNum(id);
     }
 }

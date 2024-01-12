@@ -55,9 +55,9 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = {"/category/{category}/page/{page}/", "/category/{category}/"})
+    @RequestMapping(value = {"/category/{category_name}/page/{page}/", "/category/{category_name}/"})
     public String showCategory(Model model,
-                               @PathVariable(value = "category") String categoryName,
+                               @PathVariable(value = "category_name") String categoryName,
                                @PathVariable(value = "page") Optional<Integer> maybePage) {
 
         initBaseModel(model);
@@ -69,9 +69,9 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = {"/tag/{tag}/page/{page}/", "/tag/{tag}/"})
+    @RequestMapping(value = {"/tag/{tag_name}/page/{page}/", "/tag/{tag_name}/"})
     public String showTag(Model model,
-                          @PathVariable(value = "tag") String tagName,
+                          @PathVariable(value = "tag_name") String tagName,
                           @PathVariable(value = "page") Optional<Integer> maybePage) {
 
         initBaseModel(model);
@@ -83,8 +83,8 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = {"/post/{post}/"})
-    public String post(Model model, @PathVariable(value = "post") String postName) throws UnsupportedEncodingException {
+    @RequestMapping(value = {"/post/{post_name}/"})
+    public String post(Model model, @PathVariable(value = "post_name") String postName) throws UnsupportedEncodingException {
 
         initBaseModel(model);
 
