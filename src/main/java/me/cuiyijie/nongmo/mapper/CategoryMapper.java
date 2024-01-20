@@ -1,4 +1,4 @@
-package me.cuiyijie.nongmo.dao;
+package me.cuiyijie.nongmo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.cuiyijie.nongmo.entity.Category;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Repository
-public interface CategoryDao extends BaseMapper<Category> {
+public interface CategoryMapper extends BaseMapper<Category> {
 
     List<Category> findAll(@Param("item") Category category);
 

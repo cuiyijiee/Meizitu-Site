@@ -1,4 +1,4 @@
-package me.cuiyijie.nongmo.dao;
+package me.cuiyijie.nongmo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.cuiyijie.nongmo.entity.Picture;
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2021/1/17 12:53
  */
 @Repository
-public interface PictureDao extends BaseMapper<Picture> {
+public interface PictureMapper extends BaseMapper<Picture> {
 
     List<Picture> findAll(@Param("item") Picture picture);
 

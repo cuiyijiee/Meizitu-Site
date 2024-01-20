@@ -2,55 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="base :: htmlHead(pageTitle = ${'Search Result for ' + key})">
 </head>
-<body class="home blog custom-background hfeed">
+<body>
 <div th:if="${adOn}">
     <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 </div>
-<div id="page" class="hfeed site full">
-    <header th:include="base :: htmlTitle" class="site-header">
-    </header>
+<div>
+    <header th:include="base :: htmlTitle"></header>
     <div id="content" class="site-content container">
         <div class="row">
-            <div id="primary" class="content-area col-lg-12">
-                <main id="main" class="site-main blog7">
-
-                    <header id="page-header">
-                        <h1 class="page-title">Search Results for <span th:text="${key} + ' (' + ${searchResult.size()} + ')'"></span></h1>
-                    </header>
-                    <div class="row row-eq-height">
-                        <div class="col-lg-4" th:each="album : ${searchResult}">
-                            <article th:id="${album.getId()}"
-                                     class="post type-post status-publish format-standard has-post-thumbnail hentry category-cosplay category-gravure tag-cosplay odd">
-                                <div class="post-thumbnail">
-                                    <a th:href="|/post_id/${album.getId()}/|">
-                                        <img width="400" height="600"
-                                             class="attachment-post-thumbnails size-post-thumbnails wp-post-image"
-                                             action th:src="${album.getCoverUrl()}"
-                                             th:title="${album.getTitle()}"/>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <header class="entry-header">
-                                        <div class="title-meta-wrapper"><h2 class="entry-title"><a
-                                                th:href="|/post_id/${album.getId()}/|"
-                                                rel="bookmark" th:text="${album.getTitle()}">title</a>
-                                        </h2>
-                                            <ul class="entry-meta">
-                                                <li class="posted-on"><span class="screen-reader-text">Posted on</span>
-                                                    <time class="entry-date published"
-                                                          th:datetime="${album.getCreatedAt()}"
-                                                          th:text="${album.getCreatedAt().toLocalDate()}"> published
-                                                    </time>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </header>
-                                    <div class="entry-content"></div>
-                                </div>
-                            </article>
+            <div class=" col-lg-12">
+                <header id="page-header">
+                    <h3 class="page-title">Search Results for <span
+                            th:text="${key} + ' (' + ${searchResult.size()} + ')'"></span></h3>
+                </header>
+                <div class="row row-eq-height justify-content-start row-cols-1 row-cols-md-3 g-4">
+                    <div class="col" th:each="album : ${searchResult}">
+                        <div class="card" style="" th:href="|/post_id/${album.getId()}/|">
+                            <a th:href="|/post_id/${album.getId()}/|">
+                                <img th:src="${album.getCoverUrl()}"
+                                     th:title="${album.getTitle()}" alt="image cover"
+                                     class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    th:data-bs-title="${album.getTitle()}"
+                                    th:text="${album.getTitle()}"></h5>
+                                <p class="card-text"
+                                   th:text="'Posted on ' + ${#dates.format(album.getCreatedAt(), 'yyyy-MM-dd')}"
+                                ></p>
+                            </div>
                         </div>
                     </div>
-                </main>
+                </div>
             </div>
         </div>
     </div>

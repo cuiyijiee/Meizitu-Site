@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.nongmo.config.MinioConfig;
-import me.cuiyijie.nongmo.dao.FileUploadDao;
+import me.cuiyijie.nongmo.mapper.FileUploadMapper;
 import me.cuiyijie.nongmo.entity.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,14 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
 @Service
-public class FileUploadService extends ServiceImpl<FileUploadDao, FileUpload> {
+public class FileUploadService extends ServiceImpl<FileUploadMapper, FileUpload> {
 
     @Autowired
     private MinioClient minioClient;

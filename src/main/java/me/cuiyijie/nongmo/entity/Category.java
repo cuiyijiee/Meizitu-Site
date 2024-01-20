@@ -3,7 +3,7 @@ package me.cuiyijie.nongmo.entity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author cyj976655@gmail.com
@@ -16,7 +16,7 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     private Integer showOrder;
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
 }
  

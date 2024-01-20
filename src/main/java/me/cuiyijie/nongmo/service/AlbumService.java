@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.cuiyijie.nongmo.dao.AlbumDao;
-import me.cuiyijie.nongmo.dao.PictureDao;
-import me.cuiyijie.nongmo.dao.TagDao;
+import me.cuiyijie.nongmo.config.SysConstant;
+import me.cuiyijie.nongmo.mapper.AlbumMapper;
+import me.cuiyijie.nongmo.mapper.PictureMapper;
+import me.cuiyijie.nongmo.mapper.TagMapper;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
@@ -21,8 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,22 +31,19 @@ import java.util.stream.Collectors;
  * @date 2021/1/10 21:39
  */
 @Service
-public class AlbumService extends ServiceImpl<AlbumDao, Album> {
+public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
 
     @Autowired
     private CategoryService categoryService;
 
     @Autowired
-    private PictureDao pictureDao;
+    private PictureMapper pictureMapper;
 
     @Autowired
-    private TagDao tagDao;
+    private TagMapper tagMapper;
 
     @Autowired
     private SearchRecordService searchRecordService;
-
-    private long lastObtainLatestTimestamp = 0;
-    private List<Album> latestPopularTenAlbum = new ArrayList<>();
 
     public PageUtil.PageResp<AlbumVO> listAlbum(TransAlbumRequest transAlbumRequest) {
         Page<Album> page = new Page<>(transAlbumRequest.getCurrent(), transAlbumRequest.getPageSize());
@@ -80,7 +77,7 @@ public class AlbumService extends ServiceImpl<AlbumDao, Album> {
 
         List<AlbumVO> albumVOS = page.getRecords().stream().map(item -> {
             AlbumVO albumVO = new AlbumVO();
-            Long count = pictureDao.selectCount(new QueryWrapper<Picture>().eq("album_id", item.getId()));
+            Long count = pictureMapper.selectCount(new QueryWrapper<Picture>().eq("album_id", item.getId()));
             BeanUtils.copyProperties(item, albumVO);
             albumVO.setPictureCount(count);
             return albumVO;
@@ -100,10 +97,10 @@ public class AlbumService extends ServiceImpl<AlbumDao, Album> {
             albumDetailVO.setCategory(category);
         }
 
-        List<Picture> pictureList = pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
+        List<Picture> pictureList = pictureMapper.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
         albumDetailVO.setPictureList(pictureList);
 
-        List<Tag> tagList = tagDao.selectAlbumTags(albumId);
+        List<Tag> tagList = tagMapper.selectAlbumTags(albumId);
         albumDetailVO.setTagList(tagList);
 
         return albumDetailVO;
@@ -126,7 +123,7 @@ public class AlbumService extends ServiceImpl<AlbumDao, Album> {
     }
 
     public PageUtil.PageResp<Album> pageFindByTag(Integer pageNum, Integer pageSize, String tagName) {
-        Tag tag = tagDao.selectByName(tagName);
+        Tag tag = tagMapper.selectByName(tagName);
         Page<Album> page = new Page<>(pageNum, pageSize);
         baseMapper.pageFindByTag(page, tag.getId());
         return PageUtil.convertFromPage(page);
@@ -142,36 +139,26 @@ public class AlbumService extends ServiceImpl<AlbumDao, Album> {
         return baseMapper.selectById(albumId);
     }
 
-    @Cacheable(value = "all_picture")
+    @Cacheable(value = SysConstant.CacheKey.ALBUM_PICTURE)
     public List<Picture> findAllPicture(long albumId) {
-        return pictureDao.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
+        return pictureMapper.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
     }
 
+    @Cacheable(value = SysConstant.CacheKey.RANDOM_ALBUM)
     public List<Album> getRandomAlbum() {
         List<Album> result = baseMapper.findByRandom(10);
         result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
         return result;
     }
 
+    @Cacheable(value = SysConstant.CacheKey.POPULAR_ALBUM)
     public List<Album> getLatestPopularAlbum() {
-        long nowTimestamp = System.currentTimeMillis();
-        if (nowTimestamp - lastObtainLatestTimestamp > 60 * 1000 || latestPopularTenAlbum.isEmpty()) {
-            lastObtainLatestTimestamp = nowTimestamp;
-            Page<Album> page = new Page<>(1, 100);
-            latestPopularTenAlbum = baseMapper.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();
-        }
-        List<Album> result = new ArrayList<>();
-        if (!latestPopularTenAlbum.isEmpty()) {
-            for (int index = 0; index < 10; index++) {
-                int randomAlbumIndex = (int) (Math.random() * latestPopularTenAlbum.size());
-                result.add(latestPopularTenAlbum.get(randomAlbumIndex));
-            }
-        }
-        result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
-        return result;
+        Page<Album> page = new Page<>(1, 10);
+        List<Album> albumList = baseMapper.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();
+        return albumList;
     }
 
-    public List<Album> findAlbumByTitleBy(String title, String ip) {
+    public List<Album> findAlbumByTitle(String title, String ip) {
         searchRecordService.insertNewSearchRecord(title, ip);
         return baseMapper.selectList(new QueryWrapper<Album>().like("title", title).orderByDesc("view_num"));
     }
@@ -180,7 +167,7 @@ public class AlbumService extends ServiceImpl<AlbumDao, Album> {
         Album album = new Album();
         album.setId(albumId);
         album.setEnabled(false);
-        album.setUpdatedAt(LocalDateTime.now());
+        album.setUpdatedAt(new Date());
         return baseMapper.updateById(album);
     }
 

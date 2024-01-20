@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:fragment="htmlHead(pageTitle)">
     <meta charset="utf-8"/>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L06WTLD73Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -35,14 +34,16 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta name="description"
           content="Enjoy the experience of exploring the photo galleries of the latest Asian sexy girls!"/>
-<!--    <link rel="stylesheet" href="/css/marjoram.css"/>-->
     <link rel="stylesheet" href="/css/common.css"/>
 </head>
 
 <header th:fragment="htmlTitle">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a href="/" class="navbar-brand">NongMo.Zone</a>
+            <a href="/" class="navbar-brand">
+                <img src="/images/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                NongMo.Zone
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -50,15 +51,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item" th:each="indexCategory : ${categorys}">
-                        <a th:class="${category} != null and (${category} eq ${indexCategory.getName().toLowerCase()}) ? 'nav-item nav-link active' :'nav-item nav-link' "
-                           th:href="|/category/${indexCategory.getName().toLowerCase()}/|"
-                           th:text="${indexCategory.getName()}"
+                    <li class="nav-item" th:each="index_category : ${categorys}">
+                        <a th:class="${category} != null and (${category} eq ${index_category.getName().toLowerCase()}) ? 'nav-item nav-link active' :'nav-item nav-link' "
+                           th:href="|/category/${index_category.getName().toLowerCase()}/|"
+                           th:text="${index_category.getName()}"
                            aria-current="page"></a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" role="search" action="/search/">
+                    <input class="form-control me-2" type="search" placeholder="Search &hellip;" aria-label="Search" name="key">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>

@@ -12,42 +12,16 @@ body::-webkit-scrollbar-track {
     border-radius: 8px
 }
 
-
-.page-header {
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+a{
+    text-decoration: none;
 }
 
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -20px;
-    margin-left: -20px
+#content{
+    padding: 30px;
+    margin-top: 56px;
 }
 
-.row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-
-.hentry {
-    line-height: 1.8;
-    margin: 0 0 2rem;
-}
-
-.hentry:last-child {
-    margin-bottom: 0;
-}
-
-.post-thumbnail {
-    margin-bottom: 1.875rem;
-    position: relative;
-}
-
-.wp-post-image {
-    display: block;
+.nav-links{
+    margin-top: 30px;
+    margin-bottom: 30px;
 }

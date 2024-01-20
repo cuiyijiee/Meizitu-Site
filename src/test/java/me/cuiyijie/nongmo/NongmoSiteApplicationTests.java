@@ -1,6 +1,6 @@
 package me.cuiyijie.nongmo;
 
-import me.cuiyijie.nongmo.dao.PictureDao;
+import me.cuiyijie.nongmo.mapper.PictureMapper;
 import me.cuiyijie.nongmo.service.AlbumAutoCheckService;
 import me.cuiyijie.nongmo.service.AlbumService;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class NongmoSiteApplicationTests {
     private AlbumService albumService;
 
     @Autowired
-    private PictureDao pictureDao;
+    private PictureMapper pictureMapper;
 
     @Autowired
     private AlbumAutoCheckService albumAutoCheck;

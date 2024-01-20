@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author cyj976655@gmail.com
@@ -22,7 +22,7 @@ public class Album implements Serializable {
     private Integer viewNum;
     @TableLogic
     private Boolean enabled;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
 }

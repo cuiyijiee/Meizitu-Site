@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class Tag implements Serializable {
@@ -17,7 +17,7 @@ public class Tag implements Serializable {
 
     private boolean enabled;
 
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
 }

@@ -1,15 +1,15 @@
 package me.cuiyijie.nongmo.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.cuiyijie.nongmo.dao.TagDao;
+import me.cuiyijie.nongmo.mapper.TagMapper;
 import me.cuiyijie.nongmo.entity.Tag;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class TagService extends ServiceImpl<TagDao, Tag> {
+public class TagService extends ServiceImpl<TagMapper, Tag> {
 
     public void autoSetTag(long albumId, List<String> tags) {
         List<Tag> existTags = baseMapper.selectAlbumTags(albumId);
@@ -20,7 +20,7 @@ public class TagService extends ServiceImpl<TagDao, Tag> {
                 if (tag == null) {
                     tag = new Tag();
                     tag.setTagName(newTag);
-                    tag.setCreatedAt(LocalDateTime.now());
+                    tag.setCreatedAt(new Date());
                     tag.setEnabled(true);
                     baseMapper.insert(tag);
                 }

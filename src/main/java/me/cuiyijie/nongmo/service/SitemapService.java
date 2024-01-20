@@ -6,14 +6,15 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.nongmo.dao.AlbumDao;
+import me.cuiyijie.nongmo.mapper.AlbumMapper;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,14 +33,14 @@ public class SitemapService {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    AlbumDao albumDao;
+    AlbumMapper albumMapper;
 
     public String genSitemapWithIndex(int index, boolean isNew) {
         try {
             WebSitemapGenerator sitemap = new WebSitemapGenerator(BASE_URL);
 
             WebSitemapUrl indexWebSitemapUrl = new WebSitemapUrl.Options(BASE_URL)
-                    .lastMod(toDateString(LocalDateTime.now()))
+                    .lastMod(toDateString(new Date()))
                     .changeFreq(ChangeFreq.MONTHLY).priority(1.0).build();
             sitemap.addUrl(indexWebSitemapUrl);
             for (Category category : categoryService.findAll()) {
@@ -49,7 +50,7 @@ public class SitemapService {
                 sitemap.addUrl(webSitemapUrl);
             }
             Page<Album> albumPage = new Page<>(index, 1000);
-            List<Album> albumList = albumDao.selectPage(albumPage, new QueryWrapper<Album>()).getRecords();
+            List<Album> albumList = albumMapper.selectPage(albumPage, new QueryWrapper<Album>()).getRecords();
             for (Album album : albumList) {
                 if (isNew) {
                     WebSitemapUrl webSitemapUrl = new WebSitemapUrl.Options(String.format(NEW_ALBUM_BASE_URL, album.getId()))
@@ -70,9 +71,8 @@ public class SitemapService {
         return "";
     }
 
-    private String toDateString(LocalDateTime dateTime) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return dateTime.format(fmt);
+    private String toDateString(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
 }

@@ -1,6 +1,6 @@
 package me.cuiyijie.nongmo.controller;
 
-import me.cuiyijie.nongmo.dao.TagDao;
+import me.cuiyijie.nongmo.mapper.TagMapper;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
 import me.cuiyijie.nongmo.entity.Picture;
@@ -41,7 +41,7 @@ public class MainController {
     private CategoryService categoryService;
 
     @Autowired
-    private TagDao tagDao;
+    private TagMapper tagMapper;
 
     @Autowired
     AlbumService albumService;
@@ -94,7 +94,7 @@ public class MainController {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             model.addAttribute("category", category);
             List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
-            List<Tag> tagList = tagDao.selectAlbumTags(maybeAlbum.getId());
+            List<Tag> tagList = tagMapper.selectAlbumTags(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("pictureList", pictureList);
             model.addAttribute("tagList", tagList);
@@ -116,7 +116,7 @@ public class MainController {
         if (maybeAlbum != null) {
             Category category = categoryService.findById(maybeAlbum.getCategory());
             List<Picture> pictureList = albumService.findAllPicture(maybeAlbum.getId());
-            List<Tag> tagList = tagDao.selectAlbumTags(maybeAlbum.getId());
+            List<Tag> tagList = tagMapper.selectAlbumTags(maybeAlbum.getId());
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("category", category);
             model.addAttribute("pictureList", pictureList);
@@ -132,7 +132,7 @@ public class MainController {
 
         initBaseModel(model);
 
-        List<Album> resultAlbum = albumService.findAlbumByTitleBy(key, IpUtil.getIpAddr(servletRequest));
+        List<Album> resultAlbum = albumService.findAlbumByTitle(key, IpUtil.getIpAddr(servletRequest));
         model.addAttribute("key", key);
         model.addAttribute("searchResult", resultAlbum);
 

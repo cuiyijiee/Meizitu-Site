@@ -1,4 +1,4 @@
-package me.cuiyijie.nongmo.dao;
+package me.cuiyijie.nongmo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.cuiyijie.nongmo.entity.Tag;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TagDao extends BaseMapper<Tag> {
+public interface TagMapper extends BaseMapper<Tag> {
 
 
     Tag selectByName(@Param("tagName") String tagName);

@@ -2,140 +2,142 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="base :: htmlHead(pageTitle = ${category == null ? 'NongMo.Zone' :'Category: ' + category.substring(0, 1).toUpperCase() + category.substring(1)})">
 </head>
-<body class="home blog custom-background hfeed">
+<body>
 <div th:if="${adOn}">
     <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 </div>
-<header th:include="base :: htmlTitle" class="site-header"></header>
-<div id="page" class="full">
-    <div id="content" class="site-content container">
-        <div class="row">
-            <div id="primary" class="content-area col-lg-9">
-                <main id="main" class="site-main blog7">
-                    <header class="page-header" th:if="${category != null}">
-                        <h1 class="page-title">Category: <span
-                                th:text="${category.substring(0, 1).toUpperCase() + category.substring(1)}"></span></h1>
-                    </header>
-                    <header class="page-header" th:if="${tag != null}">
-                        <h1 class="page-title">Tag: <span
-                                th:text="${tag.substring(0, 1).toUpperCase() + tag.substring(1)}"></span></h1>
-                    </header>
-
-                    <div class="row row-eq-height">
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            <div class="col" th:each="album : ${albumPage.getData()}">
-                                <div class="card"
-                                     style="width: 18rem;" th:href="|/post_id/${album.getId()}/|">
+<header th:include="base :: htmlTitle"></header>
+<div id="content" class="site-content container">
+    <div class="row">
+        <div id="primary" class="content-area col-lg-9">
+            <div>
+                <header class="page-header" th:if="${category != null}">
+                    <h3 class="page-title">Category: <span
+                            th:text="${category.substring(0, 1).toUpperCase() + category.substring(1)}"></span></h3>
+                </header>
+                <header class="page-header" th:if="${tag != null}">
+                    <h3 class="page-title">Tag: <span
+                            th:text="${tag.substring(0, 1).toUpperCase() + tag.substring(1)}"></span></h3>
+                </header>
+                <div class="row row-eq-height justify-content-start row-cols-1 row-cols-md-3 g-4">
+                    <div class="col" th:each="album : ${albumPage.getData()}">
+                        <div class="card" style="" th:href="|/post_id/${album.getId()}/|">
+                            <a th:href="|/post_id/${album.getId()}/|">
+                                <img th:src="${album.getCoverUrl()}"
+                                     th:title="${album.getTitle()}" alt="image cover"
+                                     class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    th:data-bs-title="${album.getTitle()}"
+                                    th:text="${album.getTitle()}"></h5>
+                                <p class="card-text"
+                                   th:text="'Posted on ' + ${#dates.format(album.getCreatedAt(), 'yyyy-MM-dd')}"
+                                ></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <div th:if="${category != null}">
+                        <a th:if="${albumPage.hasPre()}" th:href="|/category/${category}/page/${albumPage.getPre()}/|">
+                            <button class="btn btn-outline-success">
+                                Pre Page
+                            </button>
+                        </a>
+                        <a th:if="${albumPage.hasNext()}"
+                           th:href="|/category/${category}/page/${albumPage.getNext()}/|" style="float: right">
+                            <button class="btn btn-outline-success">
+                                Next Page
+                            </button>
+                        </a>
+                    </div>
+                    <div th:if="${tag != null}">
+                        <a th:if="${albumPage.hasPre()}" th:href="|/tag/${tag}/page/${albumPage.getPre()}/|">
+                            <button class="btn btn-outline-success">
+                                Pre Page
+                            </button>
+                        </a>
+                        <a th:if="${albumPage.hasNext()}"
+                           th:href="|/tag/${tag}/page/${albumPage.getNext()}/|"
+                           style="float: right">
+                            <button class="btn btn-outline-success">
+                                Next Page
+                            </button>
+                        </a>
+                    </div>
+                    <div th:if="${category == null && tag == null}">
+                        <a th:if="${albumPage.hasPre()}" th:href="|/page/${albumPage.getPre()}/|">
+                            <button class="btn btn-outline-success">
+                                Pre Page
+                            </button>
+                        </a>
+                        <a th:if="${albumPage.hasNext()}"
+                           th:href="|/page/${albumPage.getNext()}/|"
+                           style="float: right">
+                            <button class="btn btn-outline-success">
+                                Next Page
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <aside id="right-sidebar" class="widget-area">
+                <div id="wli_popular_posts" class="widget wli_popular_posts-class">
+                    <h3 class="page-title">Popular Posts</h3>
+                    <div class="row row-eq-height justify-content-start row-cols-1 g-4">
+                        <div class="col" th:each="album : ${latestAlbum}">
+                            <div class="card" style="" th:href="|/post_id/${album.getId()}/|">
+                                <a th:href="|/post_id/${album.getId()}/|">
                                     <img th:src="${album.getCoverUrl()}"
                                          th:title="${album.getTitle()}" alt="image cover"
                                          class="card-img-top">
-                                    <div class="card-body">
-                                        <h5 class="card-title"
-                                            th:text="${album.getTitle()}"></h5>
-                                        <p class="card-text"
-                                           th:text="'Posted on ' + ${album.getCreatedAt().toLocalDate()}"
-                                        ></p>
-                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        th:data-bs-title="${album.getTitle()}"
+                                        th:text="${album.getTitle()}"></h5>
+                                    <p class="card-text"
+                                       th:text="'Posted on ' + ${#dates.format(album.getCreatedAt(), 'yyyy-MM-dd')}"
+                                    ></p>
                                 </div>
                             </div>
                         </div>
-                        <nav class="navigation posts-navigation" role="navigation" aria-label="Posts">
-                            <h2 class="screen-reader-text">Posts navigation</h2>
-                            <div class="nav-links">
-                                <div th:if="${category != null}">
-                                    <div class="nav-next" th:if="${albumPage.hasNext()}"><a
-                                            th:href="|/category/${category}/page/${albumPage.getNext()}/|">Next page</a>
-                                    </div>
-                                    <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
-                                            th:href="|/category/${category}/page/${albumPage.getPre()}/|">Pre page</a>
-                                    </div>
-                                </div>
-                                <div th:if="${tag != null}">
-                                    <div class="nav-next" th:if="${albumPage.hasNext()}"><a
-                                            th:href="|/tag/${tag}/page/${albumPage.getNext()}/|">Next page</a>
-                                    </div>
-                                    <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
-                                            th:href="|/tag/${tag}/page/${albumPage.getPre()}/|">Pre page</a>
-                                    </div>
-                                </div>
-                                <div th:if="${category == null && tag == null}">
-                                    <div class="nav-previous" th:if="${albumPage.hasPre()}"><a
-                                            th:href="|/page/${albumPage.getPre()}/|">Pre page</a>
-                                    </div>
-                                    <div class="nav-next" th:if="${albumPage.hasNext()}"><a
-                                            th:href="|/page/${albumPage.getNext()}/|">Next page</a>
-                                    </div>
+                    </div>
+                </div>
+                <div id="wli_random_posts" class="widget wli_popular_posts-class">
+                    <h3 class="page-title">Maybe You Like Posts</h3>
+                    <div class="row row-eq-height justify-content-start row-cols-1 g-4">
+                        <div class="col" th:each="album : ${randomAlbum}">
+                            <div class="card" style="" th:href="|/post_id/${album.getId()}/|">
+                                <a th:href="|/post_id/${album.getId()}/|">
+                                    <img th:src="${album.getCoverUrl()}"
+                                         th:title="${album.getTitle()}" alt="image cover"
+                                         class="card-img-top">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        th:data-bs-title="${album.getTitle()}"
+                                        th:text="${album.getTitle()}"></h5>
+                                    <p class="card-text"
+                                       th:text="'Posted on ' + ${#dates.format(album.getCreatedAt(), 'yyyy-MM-dd')}"
+                                    ></p>
                                 </div>
                             </div>
-                        </nav>
-                    </div>
-                </main>
-            </div>
-            <div class="col-lg-3">
-                <aside id="right-sidebar" class="widget-area">
-                    <div id="custom_html-2" class="widget_text widget widget_custom_html">
-                        <div class="textwidget custom-html-widget">
-
                         </div>
                     </div>
-                    <div id="search-2" class="widget widget_search">
-                        <form role="search" method="get" class="search-form" action="/search/">
-                            <label>
-                                <span class="screen-reader-text">Search for:</span>
-                            </label>
-                            <input type="search" class="search-field" placeholder="Search &hellip;" value=""
-                                   name="key"/>
-                            <button type="submit" class="search-submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                     class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                                <span class="screen-reader-text">Search</span>
-                            </button>
-                        </form>
-                    </div>
-                    <div id="wli_popular_posts" class="widget wli_popular_posts-class">
-                        <h3 class="widget-title">Popular Posts</h3>
-                        <ul>
-                            <li th:each="album : ${latestAlbum}">
-                                <div class="post_thumb post_thumb_left">
-                                    <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
-                                        <img width="360" height="480"
-                                             th:src="${album.getCoverUrl()}"
-                                             th:data-src="${album.getCoverUrl()}"
-                                             class="lazyload attachment-360x480 size-360x480 wp-post-image"
-                                             th:alt="${album.getTitle()}"/> </a></div>
-                                <h3>
-                                    <a th:href="|/post_id/${album.getId()}/|"
-                                       th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
-                                </h3>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="wli_random_posts" class="widget wli_popular_posts-class">
-                        <h3 class="widget-title">Maybe You Like Posts</h3>
-                        <ul>
-                            <li th:each="album : ${randomAlbum}">
-                                <div class="post_thumb post_thumb_left">
-                                    <a th:href="|/post_id/${album.getId()}/|" th:title="${album.getTitle()}">
-                                        <img width="360" height="480"
-                                             th:src="${album.getCoverUrl()}"
-                                             th:data-src="${album.getCoverUrl()}"
-                                             class="lazyload attachment-360x480 size-360x480 wp-post-image"
-                                             th:alt="${album.getTitle()}"/> </a></div>
-                                <h3>
-                                    <a th:href="|/post_id/${album.getId()}/|"
-                                       th:title="${album.getTitle()}" th:text="${album.getTitle()}"></a>
-                                </h3>
-                            </li>
-                        </ul>
-                    </div>
-                </aside>
-            </div>
+                </div>
+            </aside>
         </div>
     </div>
-    <footer th:include="base :: htmlFoot" id="site-footer">
-    </footer>
+</div>
+<footer th:include="base :: htmlFoot" id="site-footer">
+</footer>
 </div>
 </body>
 </html>
