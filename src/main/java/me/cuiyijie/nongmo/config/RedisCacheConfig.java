@@ -3,6 +3,7 @@ package me.cuiyijie.nongmo.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,11 +40,11 @@ public class RedisCacheConfig implements Serializable {
         template.setKeySerializer(new StringRedisSerializer());
         // 设置value的序列化器
         //使用Jackson 2，将对象序列化为JSON
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         //json转对象类，不设置默认的会将json转成hashmap
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         template.setValueSerializer(jackson2JsonRedisSerializer);
 
@@ -65,7 +66,7 @@ public class RedisCacheConfig implements Serializable {
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
         //自定义设置缓存时间
         redisCacheConfigurationMap.put(SysConstant.CacheKey.CATEGORY, this.getRedisCacheConfigurationWithTtl(60 * 60 * 24));
-        redisCacheConfigurationMap.put(SysConstant.CacheKey.ALBUM_PICTURE, this.getRedisCacheConfigurationWithTtl(60 * 60 * 24));
+        redisCacheConfigurationMap.put(SysConstant.CacheKey.ALBUM_PICTURE, this.getRedisCacheConfigurationWithTtl(60 * 60 * 2));
         redisCacheConfigurationMap.put(SysConstant.CacheKey.RANDOM_ALBUM, this.getRedisCacheConfigurationWithTtl(5));
         redisCacheConfigurationMap.put(SysConstant.CacheKey.POPULAR_ALBUM, this.getRedisCacheConfigurationWithTtl(5));
         return redisCacheConfigurationMap;
@@ -75,7 +76,7 @@ public class RedisCacheConfig implements Serializable {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer)).entryTtl(Duration.ofSeconds(seconds));

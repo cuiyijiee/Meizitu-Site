@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,14 +130,17 @@ public class MainController {
     }
 
     @RequestMapping(value = {"search"})
-    public String search(Model model, @RequestParam String key, HttpServletRequest servletRequest) {
+    public String search(Model model, @RequestParam(required = false) String key, HttpServletRequest servletRequest) {
 
         initBaseModel(model);
 
-        List<Album> resultAlbum = albumService.findAlbumByTitle(key, IpUtil.getIpAddr(servletRequest));
+        if(StringUtils.hasText(key)){
+            List<Album> resultAlbum = albumService.findAlbumByTitle(key, IpUtil.getIpAddr(servletRequest));
+            model.addAttribute("searchResult", resultAlbum);
+        }else{
+            model.addAttribute("searchResult", new ArrayList<>());
+        }
         model.addAttribute("key", key);
-        model.addAttribute("searchResult", resultAlbum);
-
         return "search";
     }
 
