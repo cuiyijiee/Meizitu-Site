@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="base :: htmlHead(pageTitle = ${category == null ? 'NongMo.Zone' :'Category: ' + category.substring(0, 1).toUpperCase() + category.substring(1)})">
+<head th:include="base :: htmlHead(pageTitle = ${category == null ? 'NongMo.Zone' :'Category: ' + category.substring(0, 1).toUpperCase() + category.substring(1)}, googleLdJson = null)">
 </head>
 <body>
 <div th:if="${adOn}">

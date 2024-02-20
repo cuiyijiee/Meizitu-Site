@@ -33,21 +33,15 @@ public class RedisCacheConfig implements Serializable {
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
         // 创建一个模板类
-        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         // 将刚才的redis连接工厂设置到模板类中
         template.setConnectionFactory(factory);
         // 设置key的序列化器
         template.setKeySerializer(new StringRedisSerializer());
         // 设置value的序列化器
         //使用Jackson 2，将对象序列化为JSON
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        //json转对象类，不设置默认的会将json转成hashmap
-        ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = getJackson2JsonRedisSerializer();
         template.setValueSerializer(jackson2JsonRedisSerializer);
-
         return template;
     }
 
@@ -57,7 +51,8 @@ public class RedisCacheConfig implements Serializable {
      */
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-        return new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory), this.getRedisCacheConfigurationWithTtl(60), // 默认策略，未配置的 key 会使用这个
+        return new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),
+                this.getRedisCacheConfigurationWithTtl(60), // 默认策略，未配置的 key 会使用这个
                 this.getRedisCacheConfigurationMap() // 指定 key 策略
         );
     }
@@ -73,13 +68,18 @@ public class RedisCacheConfig implements Serializable {
     }
 
     private RedisCacheConfiguration getRedisCacheConfigurationWithTtl(Integer seconds) {
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = getJackson2JsonRedisSerializer();
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+        redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer)).entryTtl(Duration.ofSeconds(seconds));
+        return redisCacheConfiguration;
+    }
+
+    private Jackson2JsonRedisSerializer<Object> getJackson2JsonRedisSerializer() {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-        redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer)).entryTtl(Duration.ofSeconds(seconds));
-        return redisCacheConfiguration;
+        return jackson2JsonRedisSerializer;
     }
 }

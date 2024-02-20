@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:fragment="htmlHead(pageTitle)">
+<head th:fragment="htmlHead(pageTitle,googleLdJson)">
     <meta charset="utf-8"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L06WTLD73Y"></script>
     <script>
@@ -35,6 +35,8 @@
     <meta name="description"
           content="Enjoy the experience of exploring the photo galleries of the latest Asian sexy girls!"/>
     <link rel="stylesheet" href="/css/common.css"/>
+    <script th:if="${googleLdJson!=null}" type="application/ld+json" th:UTEXT="${googleLdJson}">
+    </script>
 </head>
 
 <header th:fragment="htmlTitle">
@@ -59,7 +61,8 @@
                     </li>
                 </ul>
                 <form class="d-flex" role="search" action="/search/">
-                    <input class="form-control me-2" type="search" placeholder="Search &hellip;" aria-label="Search" name="key">
+                    <input class="form-control me-2" type="search" placeholder="Search &hellip;" aria-label="Search"
+                           name="key">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>

@@ -1,5 +1,8 @@
 package me.cuiyijie.nongmo.service;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONConfig;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,8 +25,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -173,5 +176,23 @@ public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
 
     public int addView(Long id) {
         return baseMapper.addViewNum(id);
+    }
+
+    public String generateGoogleArticleJson(Album album, List<Picture> pictureList){
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("@context","https://schema.org");
+        metaMap.put("@type","Article");
+        metaMap.put("headline",album.getTitle());
+        metaMap.put("image", pictureList.subList(0, Math.min(pictureList.size(), 3)).stream().map(Picture::getUrl).collect(Collectors.toList()));
+        metaMap.put("datePublished", DateUtil.format(album.getCreatedAt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        if(album.getUpdatedAt()!=null){
+            metaMap.put("dateModified", DateUtil.format(album.getUpdatedAt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        }
+        Map<String, Object> authorMap = new HashMap<>();
+        authorMap.put("@type","Person");
+        authorMap.put("name","Nongmo.Zone");
+        authorMap.put("url","https://ilovexs.com");
+        metaMap.put("author",Arrays.asList(authorMap));
+        return JSONUtil.toJsonStr(metaMap);
     }
 }

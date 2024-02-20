@@ -100,6 +100,7 @@ public class MainController {
             model.addAttribute("album", maybeAlbum);
             model.addAttribute("pictureList", pictureList);
             model.addAttribute("tagList", tagList);
+            model.addAttribute("googleLdJson", albumService.generateGoogleArticleJson(maybeAlbum, pictureList));
         } else {
             return "error";
         }
@@ -123,6 +124,7 @@ public class MainController {
             model.addAttribute("category", category);
             model.addAttribute("pictureList", pictureList);
             model.addAttribute("tagList", tagList);
+            model.addAttribute("googleLdJson", albumService.generateGoogleArticleJson(maybeAlbum, pictureList));
         } else {
             return "error";
         }

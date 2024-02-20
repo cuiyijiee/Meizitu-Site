@@ -45,7 +45,7 @@ public class PageUtil {
         }
 
         public boolean hasNext() {
-            return this.current < Math.ceil(this.total / this.pageSize);
+            return this.current < Math.ceil((double) this.total / this.pageSize);
         }
 
         public Long getNext() {
@@ -53,7 +53,7 @@ public class PageUtil {
         }
 
         public Long getTotalPage(){
-            return new Double(Math.ceil(this.total / this.pageSize)).longValue();
+            return new Double(Math.ceil((double) this.total / this.pageSize)).longValue();
         }
     }
 }
