@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -118,11 +119,20 @@ public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
     }
 
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
-        Category category = categoryService.findByName(categoryName);
-        Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(OrderItem.desc("created_at"));
-        baseMapper.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
-        return PageUtil.convertFromPage(page);
+        Optional<Category> categoryOptional = categoryService.findAll()
+                .stream()
+                .filter(category -> category.getEnabled() != null
+                        && category.getEnabled()
+                        && category.getName().equalsIgnoreCase(categoryName))
+                .findFirst();
+        if (categoryOptional.isPresent()) {
+            Page<Album> page = new Page<>(pageNum, pageSize);
+            page.addOrder(OrderItem.desc("created_at"));
+            baseMapper.selectPage(page, new QueryWrapper<Album>().eq("category", categoryOptional.get().getId()));
+            return PageUtil.convertFromPage(page);
+        } else {
+            return PageUtil.defaultNull();
+        }
     }
 
     public PageUtil.PageResp<Album> pageFindByTag(Integer pageNum, Integer pageSize, String tagName) {
@@ -178,21 +188,21 @@ public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
         return baseMapper.addViewNum(id);
     }
 
-    public String generateGoogleArticleJson(Album album, List<Picture> pictureList){
+    public String generateGoogleArticleJson(Album album, List<Picture> pictureList) {
         Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("@context","https://schema.org");
-        metaMap.put("@type","Article");
-        metaMap.put("headline",album.getTitle());
+        metaMap.put("@context", "https://schema.org");
+        metaMap.put("@type", "Article");
+        metaMap.put("headline", album.getTitle());
         metaMap.put("image", pictureList.subList(0, Math.min(pictureList.size(), 3)).stream().map(Picture::getUrl).collect(Collectors.toList()));
         metaMap.put("datePublished", DateUtil.format(album.getCreatedAt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-        if(album.getUpdatedAt()!=null){
+        if (album.getUpdatedAt() != null) {
             metaMap.put("dateModified", DateUtil.format(album.getUpdatedAt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         }
         Map<String, Object> authorMap = new HashMap<>();
-        authorMap.put("@type","Person");
-        authorMap.put("name","Nongmo.Zone");
-        authorMap.put("url","https://ilovexs.com");
-        metaMap.put("author",Arrays.asList(authorMap));
+        authorMap.put("@type", "Person");
+        authorMap.put("name", "Nongmo.Zone");
+        authorMap.put("url", "https://ilovexs.com");
+        metaMap.put("author", Arrays.asList(authorMap));
         return JSONUtil.toJsonStr(metaMap);
     }
 }

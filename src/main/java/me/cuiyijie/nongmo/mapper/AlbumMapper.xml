@@ -10,6 +10,7 @@
         <result column="category" property="category" jdbcType="INTEGER"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="view_num" property="viewNum" jdbcType="INTEGER"/>
+        <result column="enabled" property="enabled" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="findAll" resultMap="BaseResultMap" parameterType="map">

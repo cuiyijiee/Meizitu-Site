@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public class PageUtil {
                 page.getCurrent(),
                 page.getSize(),
                 page.getRecords());
+    }
+
+    public static <T> PageResp<T> defaultNull(){
+        return new PageResp<>(0L, 0L, 0L, new ArrayList<>());
     }
 
     @Setter

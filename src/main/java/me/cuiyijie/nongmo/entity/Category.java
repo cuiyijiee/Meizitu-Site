@@ -17,6 +17,7 @@ public class Category implements Serializable {
     private String name;
     private Integer showOrder;
     private Date createdAt;
+    private Boolean enabled;
 
 }
  
