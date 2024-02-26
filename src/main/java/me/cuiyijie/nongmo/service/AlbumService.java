@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -118,11 +119,18 @@ public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
     }
 
     public PageUtil.PageResp<Album> pageFindByCategory(Integer pageNum, Integer pageSize, String categoryName) {
-        Category category = categoryService.findByName(categoryName);
-        Page<Album> page = new Page<>(pageNum, pageSize);
-        page.addOrder(OrderItem.desc("created_at"));
-        baseMapper.selectPage(page, new QueryWrapper<Album>().eq("category", category.getId()));
-        return PageUtil.convertFromPage(page);
+        Optional<Category> categoryOptional = categoryService.findAll()
+                .stream()
+                .filter(category ->category != null && category.getEnabled() && category.getName().equalsIgnoreCase(categoryName))
+                .findFirst();
+        if(categoryOptional.isPresent()) {
+            Page<Album> page = new Page<>(pageNum, pageSize);
+            page.addOrder(OrderItem.desc("created_at"));
+            baseMapper.selectPage(page, new QueryWrapper<Album>().eq("category", categoryOptional.get().getId()));
+            return PageUtil.convertFromPage(page);
+        }else {
+            return PageUtil.defaultNull();
+        }
     }
 
     public PageUtil.PageResp<Album> pageFindByTag(Integer pageNum, Integer pageSize, String tagName) {

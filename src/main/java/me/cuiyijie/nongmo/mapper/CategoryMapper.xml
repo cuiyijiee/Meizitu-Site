@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="enabled" property="enabled" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <select id="findAll" resultMap="BaseResultMap" parameterType="map">
@@ -17,7 +18,7 @@
         <if test="item.name != null and item.name != ''">
             AND name = #{item.name}
         </if>
-        AND enabled = 1
+        AND enabled = true
         ORDER BY show_order ASC
     </select>
 

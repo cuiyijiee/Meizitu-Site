@@ -50,10 +50,6 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         return baseMapper.selectList(new QueryWrapper<Category>().eq("enabled", true).orderByAsc("show_order"));
     }
 
-    public Category findByName(String categoryName) {
-        return baseMapper.selectOne(new QueryWrapper<Category>().eq("name", categoryName).eq("enabled", true));
-    }
-
     public Category findById(Long categoryId) {
         return baseMapper.selectById(categoryId);
     }
