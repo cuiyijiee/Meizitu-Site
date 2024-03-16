@@ -3,7 +3,6 @@ package me.cuiyijie.nongmo.util;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Getter;
 import lombok.Setter;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,8 @@ public class PageUtil {
                 page.getRecords());
     }
 
-    public static <T> PageResp<T> defaultNull(){
-        return new PageResp<>(0L,0L,0L, new ArrayList<>());
+    public static <T> PageResp<T> defaultNull() {
+        return new PageResp<>(0L, 0L, 0L, new ArrayList<>());
     }
 
     @Setter
@@ -58,7 +57,7 @@ public class PageUtil {
             return this.current + 1;
         }
 
-        public Long getTotalPage(){
+        public Long getTotalPage() {
             return new Double(Math.ceil((double) this.total / this.pageSize)).longValue();
         }
     }
