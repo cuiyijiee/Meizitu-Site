@@ -45,7 +45,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     }
 
 
-    @Cacheable(value = SysConstant.CacheKey.CATEGORY)
+//    @Cacheable(value = SysConstant.CacheKey.CATEGORY)
     public List<Category> findAll() {
         return baseMapper.selectList(new QueryWrapper<Category>().eq("enabled", true).orderByAsc("show_order"));
     }

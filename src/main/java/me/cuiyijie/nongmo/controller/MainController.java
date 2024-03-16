@@ -1,5 +1,6 @@
 package me.cuiyijie.nongmo.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import me.cuiyijie.nongmo.mapper.TagMapper;
 import me.cuiyijie.nongmo.entity.Album;
 import me.cuiyijie.nongmo.entity.Category;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class MainController {
     @Autowired
     AlbumService albumService;
 
-    @RequestMapping(value = {"/page/{page}", "/"})
+    @RequestMapping(value = {"/page/{page}/", "/"})
     public String index(Model model, @PathVariable(value = "page") Optional<Integer> maybePage) {
         initBaseModel(model);
         PageUtil.PageResp<Album> albumPageResp =
@@ -107,7 +107,7 @@ public class MainController {
         return "post";
     }
 
-    @RequestMapping(value = {"/post_id/{post_id}", "/post_id/{post_id}/page/{page_num}"})
+    @RequestMapping(value = {"/post_id/{post_id}/", "/post_id/{post_id}/page/{page_num}/"})
     public String newPost(Model model,
                           @PathVariable(value = "post_id") Long postId,
                           @PathVariable(value = "page_num", required = false) Integer pageNum
@@ -131,7 +131,7 @@ public class MainController {
         return "post";
     }
 
-    @RequestMapping(value = {"search"})
+    @RequestMapping(value = {"/search/"})
     public String search(Model model, @RequestParam(required = false) String key, HttpServletRequest servletRequest) {
 
         initBaseModel(model);
@@ -147,7 +147,7 @@ public class MainController {
     }
 
     @ResponseBody
-    @RequestMapping(value = {"view"})
+    @RequestMapping(value = {"/view/"})
     public String addView(@RequestParam Long id) {
         albumService.addView(id);
         return "ok";

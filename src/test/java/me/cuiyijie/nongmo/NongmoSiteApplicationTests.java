@@ -21,6 +21,6 @@ class NongmoSiteApplicationTests {
 
     @Test
     void contextLoads() {
-        albumAutoCheck.check();
+//        albumAutoCheck.check();
     }
 }

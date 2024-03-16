@@ -150,19 +150,19 @@ public class AlbumService extends ServiceImpl<AlbumMapper, Album> {
         return baseMapper.selectById(albumId);
     }
 
-    @Cacheable(value = SysConstant.CacheKey.ALBUM_PICTURE)
+//    @Cacheable(value = SysConstant.CacheKey.ALBUM_PICTURE)
     public List<Picture> findAllPicture(long albumId) {
         return pictureMapper.selectList(new QueryWrapper<Picture>().eq("album_id", albumId));
     }
 
-    @Cacheable(value = SysConstant.CacheKey.RANDOM_ALBUM)
+//    @Cacheable(value = SysConstant.CacheKey.RANDOM_ALBUM)
     public List<Album> getRandomAlbum() {
         List<Album> result = baseMapper.findByRandom(10);
         result.sort((o1, o2) -> o2.getViewNum() - o1.getViewNum());
         return result;
     }
 
-    @Cacheable(value = SysConstant.CacheKey.POPULAR_ALBUM)
+//    @Cacheable(value = SysConstant.CacheKey.POPULAR_ALBUM)
     public List<Album> getLatestPopularAlbum() {
         Page<Album> page = new Page<>(1, 10);
         List<Album> albumList = baseMapper.selectPage(page, new QueryWrapper<Album>().orderByDesc("view_num")).getRecords();

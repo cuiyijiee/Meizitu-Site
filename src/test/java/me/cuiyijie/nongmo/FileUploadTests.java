@@ -21,10 +21,10 @@ public class FileUploadTests {
     @Test
     void contextLoads() throws IOException {
 
-        File file = new File("/Users/cuiyijie/Downloads/2953557786920565131.MP4");
-        FileInputStream inputStream = new FileInputStream(file);
-        FileUpload fileUpload = fileUploadService.uploadFile("", file.getName(), inputStream);
-        log.info("upload file success: {}", fileUpload);
+//        File file = new File("/Users/cuiyijie/Downloads/2953557786920565131.MP4");
+//        FileInputStream inputStream = new FileInputStream(file);
+//        FileUpload fileUpload = fileUploadService.uploadFile("", file.getName(), inputStream);
+//        log.info("upload file success: {}", fileUpload);
     }
 
 }

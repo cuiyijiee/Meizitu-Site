@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="base :: htmlHead(pageTitle = ${album.getTitle()}, googleLdJson = ${googleLdJson})">
+<head th:insert="~{base :: htmlHead(pageTitle = ${album.getTitle()}, googleLdJson = ${googleLdJson})}">
 </head>
 <body>
 <script>
@@ -12,7 +12,7 @@
     <script async src="https://cst.cstwpush.com/static/adManager.js" data-admpid="4526"></script>
 </div>
 <div>
-    <header th:include="base :: htmlTitle"></header>
+    <header th:insert="~{base :: htmlTitle}"></header>
     <div id="content" class="site-content container">
         <div class="row">
             <div class="col-lg-9">
@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-    <footer th:include="base :: htmlFoot" id="site-footer">
+    <footer th:insert="~{base :: htmlFoot}" id="site-footer">
     </footer>
 </div>
 </body>

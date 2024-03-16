@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <contextName>nongmo</contextName>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="logging.maxFileSize" value="10MB"></property>
+    <property name="logging.maxHistory" value="30"></property>
+    <property name="logging.totalSizeCap" value="20GB"></property>
+    <property name="logging.path" value="home/logs"></property>
+    <property name="spring.application.name" value="nongmo"></property>
+    <property name="logging.pattern.file" value="%d{yyyy-MM-dd HH:mm:ss.SSS} {%X{ip}} [%thread] %-5level %logger{50} [%-4line] - %msg%n"></property>
+    <property name="logging.pattern.console" value="%d{yyyy-MM-dd HH:mm:ss.SSS} {%X{ip}} [%thread] %-5level %logger{50} [%-4line] - %msg%n" ></property>
+
+    <appender name="error-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logging.path}/${spring.application.name}/common_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logging.path}/${spring.application.name}/error/common_error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${logging.maxFileSize}</maxFileSize>
+            <maxHistory>${logging.maxHistory}</maxHistory>
+            <totalSizeCap>${logging.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging.pattern.file}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logging.path}/${spring.application.name}/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logging.path}/${spring.application.name}/all/all-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${logging.maxFileSize}</maxFileSize>
+            <maxHistory>${logging.maxHistory}</maxHistory>
+            <totalSizeCap>${logging.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging.pattern.file}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logging.pattern.console}</pattern>
+        </encoder>
+    </appender>
+
+
+    <root level="INFO">
+        <appender-ref ref="error-file"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="console"/>
+    </root>
+
+    <logger name="me.cuiyijie.nongmo.mapper" level="DEBUG" />
+
+</configuration>
